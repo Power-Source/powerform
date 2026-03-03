@@ -6,8 +6,8 @@ title: "Powerform"
 <h2 align="center" style="color:#38c2bb;">📚 Powerform</h2>
 
 <div class="menu">
-  <a href="https://github.com/cp-psource/powerform/discussions" style="color:#38c2bb;">💬 Forum</a>
-  <a href="https://github.com/cp-psource/powerform/releases" style="color:#38c2bb;">⬇️ Download</a>
+  <a href="https://github.com/Power-Source/powerform/discussions" style="color:#38c2bb;">💬 Forum</a>
+  <a href="https://github.com/Power-Source/powerform/releases" style="color:#38c2bb;">⬇️ Download</a>
 </div>
 
 Bestes WordPress-Formular-Builder-Plugin. Erstelle Kontaktformulare, Zahlungsformulare und Bestellformulare mit über 1000 Integrationen.

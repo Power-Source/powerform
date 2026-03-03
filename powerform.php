@@ -1,16 +1,16 @@
 <?php
 /**
  * Plugin Name: Powerform
- * Version: 1.2.4
- * Plugin URI:  https://cp-psource.github.io/powerform/
- * Description: Erfasse Benutzerinformationen (so detailliert wie Sie möchten), beteilige Benutzer an interaktiven Umfragen, die Echtzeitergebnisse und Grafiken, Quizfragen im Facebook-Stil und Wissenstests ohne falsche Antwort anzeigen.
+ * Version: 1.0.0
+ * Plugin URI:  https://power-source.github.io/powerform/
+ * Description: Erfasse Benutzerinformationen (so detailliert wie Du möchtest), beteilige Benutzer an interaktiven Umfragen, die Echtzeitergebnisse und Grafiken, Quizfragen im Facebook-Stil und Wissenstests ohne falsche Antwort anzeigen.
  * Author: PSOURCE
- * Author URI: https://github.com/cp-psource
+ * Author URI: https://github.com/Power-Source
  * Text Domain: powerform
  * Domain Path: /languages/
  */
 /*
-Copyright 2009-2025 PSOURCE (https://github.com/cp-psource)
+Copyright 2009-2026 PSOURCE (https://github.com/Power-Source)
 Author – DerN3rd 
 
 This program is free software; you can redistribute it and/or modify
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'POWERFORM_VERSION' ) ) {
-	define( 'POWERFORM_VERSION', '1.2.4' );
+	define( 'POWERFORM_VERSION', '1.0.0' );
 }
 
 if ( ! defined( 'POWERFORM_SUI_VERSION' ) ) {
