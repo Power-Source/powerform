@@ -1,0 +1,36 @@
+/* ClassicPress Radio Button Fix - Radio selection indicator */
+/* jQuery 3.x compatibility: Use .prop() instead of .attr() for checked state */
+
+/* Default Design */
+.powerform-ui.powerform-poll[data-design=default] .powerform-radio.powerform-is_checked span[aria-hidden]:before {
+    opacity: 1 !important;
+    -khtml-opacity: 1 !important;
+    background-color: #333 !important;
+}
+
+/* Flat Design */
+.powerform-ui.powerform-poll[data-design=flat] .powerform-radio.powerform-is_checked span[aria-hidden]:before {
+    opacity: 1 !important;
+    -khtml-opacity: 1 !important;
+    background-color: #17A8E3 !important;
+}
+
+/* Bold Design */
+.powerform-ui.powerform-poll[data-design=bold] .powerform-radio.powerform-is_checked span[aria-hidden]:before {
+    opacity: 1 !important;
+    -khtml-opacity: 1 !important;
+    background-color: #333 !important;
+}
+
+/* Material Design */
+.powerform-ui.powerform-poll[data-design=material] .powerform-radio.powerform-is_checked span[aria-hidden]:before {
+    opacity: 1 !important;
+    -khtml-opacity: 1 !important;
+    background-color: #17A8E3 !important;
+}
+
+/* Material Design after effect */
+.powerform-ui.powerform-poll[data-design=material] .powerform-radio.powerform-is_checked span[aria-hidden]:after {
+    opacity: 1 !important;
+    -khtml-opacity: 1 !important;
+}
