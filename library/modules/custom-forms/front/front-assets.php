@@ -238,8 +238,30 @@ class Powerform_Assets_Enqueue_Form extends Powerform_Assets_Enqueue {
 			true
 		);
 
-		// load date picker scripts always
-		wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_script(
+			'powerform-field-datepicker-range',
+			powerform_plugin_url() . 'assets/js/library/daterangepicker.min.js',
+			array( 'jquery', 'powerform-custom-form-moment' ),
+			'3.1.0',
+			true
+		);
+
+		wp_enqueue_style(
+			'powerform-field-datepicker-range-css',
+			powerform_plugin_url() . 'assets/css/daterangepicker.min.css',
+			array(),
+			'3.1.0'
+		);
+
+		global $wp_scripts;
+		if ( isset( $wp_scripts->registered['powerform-front-scripts'] ) ) {
+			$wp_scripts->registered['powerform-front-scripts']->deps = array_unique(
+				array_merge(
+					$wp_scripts->registered['powerform-front-scripts']->deps,
+					array( 'powerform-custom-form-moment', 'powerform-field-datepicker-range' )
+				)
+			);
+		}
 
 		//localize Datepicker js
 		$datepicker_date_format = str_replace(

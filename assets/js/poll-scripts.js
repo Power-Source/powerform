@@ -5048,9 +5048,13 @@
                     this.$el = jQuery(this.el);
                     var t = _.isUndefined(this.props.settings[this.props.property]) ? this.props.defaultValue : this.props.settings[this.props.property],
                         n = this.props.dateFormat ? this.props.dateFormat : "d MM yy";
-                    this.$el.val(t), this.$el.datepicker({ beforeShow: function(t, n) { jQuery("#ui-datepicker-div").addClass("sui-calendar"), "powerform-field-date" === e.$el.attr("id") && ("disable" === e.props.state.past_dates ? e.$el.datepicker("option", "minDate", e.$el.datepicker("getDate")) : "enable" === e.props.state.past_dates && e.$el.datepicker("option", "minDate", null)) }, dateFormat: n, dayNamesMin: powerforml10n.calendar.day_names_min, monthNames: powerforml10n.calendar.month_names, onSelect: function(t) { e.updateValue(t) } }), this.updateValue = this.updateValue.bind(this)
+                    var r = { yy: "YYYY", y: "YY", MM: "MMMM", M: "MMM", mm: "MM", m: "M", dd: "DD", d: "D" },
+                        o = (n || "d MM yy").replace(/yy|y|MM|M|mm|m|dd|d/g, function(e) { return r[e] || e }),
+                        a = t ? moment(t, [o, "MM/DD/YYYY", "MM/DD/YY", "YYYY-MM-DD", "D MMMM YYYY"], !0) : moment(),
+                        i = "disable" === e.props.state.past_dates ? (a.isValid() ? a : moment()) : !1;
+                    this.$el.val(t), this.$el.daterangepicker({ singleDatePicker: !0, autoUpdateInput: !0, showDropdowns: !0, minDate: i, locale: { format: o, daysOfWeek: powerforml10n.calendar.day_names_min, monthNames: powerforml10n.calendar.month_names } }), this.$el.on("apply.daterangepicker", function(t, n) { e.updateValue(n.startDate.format(o)) }), this.updateValue = this.updateValue.bind(this)
                 }
-            }, { key: "updateValue", value: function(e) { "function" == typeof this.props.updateProperty ? this.props.updateProperty(this.props.property, e) : this.props.actions.settingsActions.updateSetting(this.props.property, e) } }, { key: "componentWillUnmount", value: function() { this.$el.datepicker("destroy"), this.$el.unbind().removeData() } }, {
+            }, { key: "updateValue", value: function(e) { "function" == typeof this.props.updateProperty ? this.props.updateProperty(this.props.property, e) : this.props.actions.settingsActions.updateSetting(this.props.property, e) } }, { key: "componentWillUnmount", value: function() { var e = this.$el.data("daterangepicker"); e && e.remove(), this.$el.unbind().removeData() } }, {
                 key: "render",
                 value: function() {
                     var e = this,
@@ -5092,8 +5096,8 @@
         f = r(p),
         d = n(417),
         h = r(d),
-        m = (0, c.default)(powerformData.currentForm);
-    f.default.setLocale(powerforml10n.locale), window.powerformChanges = { answers: [], settings: !1 }, (0, i.render)(a.default.createElement(s.Provider, { store: m }, a.default.createElement(l.MemoryRouter, null, a.default.createElement(l.Route, { component: h.default }))), document.getElementById("powerform-poll-builder"))
+        m = (0, c.default)((window.powerformData = window.powerformData || {}, window.powerformData.currentForm = window.powerformData.currentForm || { wrappers: [], settings: {}, notifications: [] }, window.powerformData.currentForm));
+    f.default.setLocale(powerforml10n.locale), window.powerformChanges = { answers: [], settings: !1 }; function powerformMountPollBuilder() { var e = document.getElementById("powerform-poll-builder"); e && (0, i.render)(a.default.createElement(s.Provider, { store: m }, a.default.createElement(l.MemoryRouter, null, a.default.createElement(l.Route, { component: h.default }))), e) } document.getElementById("powerform-poll-builder") ? powerformMountPollBuilder() : jQuery(function() { powerformMountPollBuilder() })
 }, function(e, t, n) {
     "use strict";
 

@@ -38,7 +38,6 @@
         init: function() {
             var self = this,
                 dateFormat = this.$el.data('format'),
-                restrictType = this.$el.data('restrict-type'),
                 restrict = this.$el.data('restrict'),
                 restrictedDays = this.$el.data('restrict'),
                 minYear = this.$el.data('start-year'),
@@ -53,26 +52,24 @@
                 startOffset = this.$el.data('start-offset'),
                 endOffset = this.$el.data('end-offset'),
                 disableDate = this.$el.data('disable-date'),
-                disableRange = this.$el.data('disable-range');
+                disableRange = this.$el.data('disable-range'),
+                momentFormat = this.to_moment_format(dateFormat);
 
-            //possible restrict only one
             if (!isNaN(parseFloat(restrictedDays)) && isFinite(restrictedDays)) {
                 restrictedDays = [restrictedDays.toString()];
             } else {
-                restrictedDays = restrict.split(',');
+                restrictedDays = (restrict || '').toString().split(',');
             }
-            disableDate = disableDate.split(',');
-            disableRange = disableRange.split(',');
+
+            disableDate = (disableDate || '').toString().split(',');
+            disableRange = (disableRange || '').toString().split(',');
 
             if (!minYear) {
-                minYear = "c-95";
+                minYear = 'c-95';
             }
             if (!maxYear) {
-                maxYear = "c+95";
+                maxYear = 'c+95';
             }
-            var disabledWeekDays = function(current_date) {
-                return self.restrict_date(restrictedDays, disableDate, disableRange, current_date);
-            };
 
             var parent = this.$el.closest('.powerform-custom-form'),
                 add_class = "powerform-calendar";
@@ -88,109 +85,222 @@
             }
 
 
-            this.$el.datepicker({
-                "beforeShow": function(input, inst) {
-                    // Remove all Hustle UI related classes
-                    (inst.dpDiv).removeClass(function(index, css) {
-                        return (css.match(/\bhustle-\S+/g) || []).join(' ');
-                    });
-
-                    // Remove all Powerform UI related classes
-                    (inst.dpDiv).removeClass(function(index, css) {
-                        return (css.match(/\bpowerform-\S+/g) || []).join(' ');
-                    });
-                    (inst.dpDiv).addClass('powerform-custom-form-' + parent.data('form-id') + ' ' + add_class);
-                    // Enable/disable past dates
-                    if ('disable' === pastDates) {
-                        $(this).datepicker('option', 'minDate', dateValue);
-                    } else {
-                        $(this).datepicker('option', 'minDate', null);
-                    }
-                    if (minDate) {
-                        var min_date = new Date(minDate);
-                        $(this).datepicker('option', 'minDate', min_date);
-                    }
-                    if (maxDate) {
-                        var max_date = new Date(maxDate);
-                        $(this).datepicker('option', 'maxDate', max_date);
-                    }
-                    if (startField) {
-                        var fieldVal = $('input[name ="' + startField + '"]').val();
-                        if (typeof fieldVal !== 'undefined') {
-                            var startDate = new Date(fieldVal),
-                                sdata = startOffset.split('_'),
-                                start_new_date = moment(startDate).add(sdata[1], sdata[2]);
-                            if ('-' === sdata[0]) {
-                                start_new_date = moment(startDate).subtract(sdata[1], sdata[2]);
-                            }
-                            var start_date_format = moment(start_new_date).format(dateFormat.toUpperCase()),
-                                startDateVal = new Date(start_date_format);
-                            $(this).datepicker('option', 'minDate', startDateVal);
-                        }
-                    }
-
-                    if (endField) {
-                        var endFieldVal = $('input[name ="' + endField + '"]').val();
-                        if (typeof endFieldVal !== 'undefined') {
-                            var endDate = new Date(endFieldVal),
-                                edata = endOffset.split('_'),
-                                end_new_date = moment(endDate).add(edata[1], edata[2]);
-                            if ('-' === edata[0]) {
-                                end_new_date = moment(endDate).subtract(edata[1], edata[2]);
-                            }
-                            var end_date_format = moment(end_new_date).format(dateFormat.toUpperCase()),
-                                endDateVal = new Date(end_date_format);
-                            $(this).datepicker('option', 'maxDate', endDateVal);
-                        }
-                    }
+            this.$el.daterangepicker({
+                singleDatePicker: true,
+                autoUpdateInput: false,
+                showDropdowns: true,
+                minYear: this.resolve_year_value(minYear, true),
+                maxYear: this.resolve_year_value(maxYear, false),
+                minDate: this.resolve_year_bound(minYear, true),
+                maxDate: this.resolve_year_bound(maxYear, false),
+                locale: {
+                    format: momentFormat,
+                    firstDay: parseInt(startOfWeek, 10) || 0,
+                    daysOfWeek: (datepickerLang && datepickerLang.dayNamesMin) ? datepickerLang.dayNamesMin : undefined,
+                    monthNames: (datepickerLang && datepickerLang.monthNames) ? datepickerLang.monthNames : undefined
                 },
-                "beforeShowDay": disabledWeekDays,
-                "monthNames": datepickerLang.monthNames,
-                "monthNamesShort": datepickerLang.monthNamesShort,
-                "dayNames": datepickerLang.dayNames,
-                "dayNamesShort": datepickerLang.dayNamesShort,
-                "dayNamesMin": datepickerLang.dayNamesMin,
-                "changeMonth": true,
-                "changeYear": true,
-                "dateFormat": dateFormat,
-                "yearRange": minYear + ":" + maxYear,
-                "minDate": new Date(minYear, 0, 1),
-                "maxDate": new Date(maxYear, 11, 31),
-                "firstDay": startOfWeek,
-                "onClose": function() {
-                    //Called when the datepicker is closed, whether or not a date is selected
-                    $(this).valid();
-                },
+                isInvalidDate: function(currentMoment) {
+                    return self.restrict_date(restrictedDays, disableDate, disableRange, currentMoment, momentFormat);
+                }
             });
 
-            //Disables google translator for the datepicker - this prevented that when selecting the date the result is presented as follows: NaN/NaN/NaN
-            $('.ui-datepicker').addClass('notranslate');
+            var picker = this.$el.data('daterangepicker');
+
+            if (picker && picker.container) {
+                picker.container.addClass('powerform-custom-form-' + parent.data('form-id') + ' ' + add_class + ' notranslate');
+            }
+
+            this.$el.on('show.daterangepicker', function() {
+                var bounds = self.get_dynamic_bounds({
+                    pastDates: pastDates,
+                    dateValue: dateValue,
+                    minDate: minDate,
+                    maxDate: maxDate,
+                    startField: startField,
+                    endField: endField,
+                    startOffset: startOffset,
+                    endOffset: endOffset,
+                    momentFormat: momentFormat
+                });
+
+                picker.minDate = bounds.minDate;
+                picker.maxDate = bounds.maxDate;
+                picker.updateView();
+                picker.updateCalendars();
+            });
+
+            this.$el.on('apply.daterangepicker', function(ev, activePicker) {
+                $(this).val(activePicker.startDate.format(momentFormat)).trigger('change').valid();
+            });
+
+            this.$el.on('cancel.daterangepicker', function() {
+                $(this).val('').trigger('change').valid();
+            });
+
+            var initialDate = this.parse_date_value(this.$el.val(), momentFormat);
+            if (picker && initialDate) {
+                picker.setStartDate(initialDate);
+                picker.setEndDate(initialDate);
+                this.$el.val(initialDate.format(momentFormat));
+            }
         },
 
-        restrict_date: function(restrictedDays, disableDate, disableRange, date) {
-            var hasRange = true,
-                day = date.getDay(),
-                date_string = jQuery.datepicker.formatDate('mm/dd/yy', date);
+        parse_date_value: function(value, momentFormat) {
+            if (!value) {
+                return null;
+            }
 
-            for (var i = 0; i < disableRange.length; i++) {
+            var parsed = moment(value, [momentFormat, 'MM/DD/YYYY', 'MM/DD/YY', 'YYYY-MM-DD', 'D MMMM YYYY'], true);
+            if (!parsed.isValid()) {
+                parsed = moment(value);
+            }
 
-                var disable_date_range = disableRange[i].split("-"),
-                    start_date = new Date($.trim(disable_date_range[0])),
-                    end_date = new Date($.trim(disable_date_range[1]));
-                if (date >= start_date && date <= end_date) {
+            return parsed.isValid() ? parsed : null;
+        },
+
+        resolve_year_value: function(yearValue, isStart) {
+            if (!yearValue) {
+                return isStart ? moment().year() - 95 : moment().year() + 95;
+            }
+
+            var yearString = yearValue.toString();
+            if (yearString.indexOf('c') === 0) {
+                var offset = parseInt(yearString.replace('c', ''), 10);
+                if (!isNaN(offset)) {
+                    return moment().year() + offset;
+                }
+            }
+
+            var year = parseInt(yearString, 10);
+            return isNaN(year) ? (isStart ? moment().year() - 95 : moment().year() + 95) : year;
+        },
+
+        resolve_year_bound: function(yearValue, isStart) {
+            var year = this.resolve_year_value(yearValue, isStart);
+            return isStart ? moment([year, 0, 1]) : moment([year, 11, 31]);
+        },
+
+        apply_offset: function(baseMoment, offsetValue) {
+            if (!offsetValue || !baseMoment) {
+                return baseMoment;
+            }
+
+            var data = offsetValue.toString().split('_');
+            if (data.length < 3) {
+                return baseMoment;
+            }
+
+            var sign = data[0],
+                amount = parseInt(data[1], 10),
+                unit = data[2];
+
+            if (isNaN(amount)) {
+                return baseMoment;
+            }
+
+            if ('-' === sign) {
+                return baseMoment.clone().subtract(amount, unit);
+            }
+
+            return baseMoment.clone().add(amount, unit);
+        },
+
+        get_dynamic_bounds: function(config) {
+            var minDate = this.resolve_year_bound(this.$el.data('start-year') || 'c-95', true),
+                maxDate = this.resolve_year_bound(this.$el.data('end-year') || 'c+95', false);
+
+            if ('disable' === config.pastDates) {
+                var startValue = this.parse_date_value(config.dateValue, config.momentFormat);
+                minDate = startValue || moment();
+            }
+
+            if (config.minDate) {
+                var configuredMinDate = this.parse_date_value(config.minDate, config.momentFormat);
+                if (configuredMinDate) {
+                    minDate = configuredMinDate;
+                }
+            }
+
+            if (config.maxDate) {
+                var configuredMaxDate = this.parse_date_value(config.maxDate, config.momentFormat);
+                if (configuredMaxDate) {
+                    maxDate = configuredMaxDate;
+                }
+            }
+
+            if (config.startField) {
+                var linkedStartValue = $('input[name ="' + config.startField + '"]').val();
+                if (typeof linkedStartValue !== 'undefined' && linkedStartValue !== '') {
+                    var linkedStartMoment = this.parse_date_value(linkedStartValue, config.momentFormat);
+                    if (linkedStartMoment) {
+                        minDate = this.apply_offset(linkedStartMoment, config.startOffset);
+                    }
+                }
+            }
+
+            if (config.endField) {
+                var linkedEndValue = $('input[name ="' + config.endField + '"]').val();
+                if (typeof linkedEndValue !== 'undefined' && linkedEndValue !== '') {
+                    var linkedEndMoment = this.parse_date_value(linkedEndValue, config.momentFormat);
+                    if (linkedEndMoment) {
+                        maxDate = this.apply_offset(linkedEndMoment, config.endOffset);
+                    }
+                }
+            }
+
+            return {
+                minDate: minDate,
+                maxDate: maxDate
+            };
+        },
+
+        to_moment_format: function(dateFormat) {
+            var formatMap = {
+                yy: 'YYYY',
+                y: 'YY',
+                MM: 'MMMM',
+                M: 'MMM',
+                mm: 'MM',
+                m: 'M',
+                DD: 'dddd',
+                D: 'ddd',
+                dd: 'DD',
+                d: 'D',
+                o: 'DDD'
+            };
+
+            return (dateFormat || 'mm/dd/yy').replace(/yy|y|MM|M|mm|m|DD|D|dd|d|o/g, function(token) {
+                return formatMap[token] || token;
+            });
+        },
+
+        restrict_date: function(restrictedDays, disableDate, disableRange, date, momentFormat) {
+            var day = date.day(),
+                dateStringShort = date.format('MM/DD/YY'),
+                dateStringLong = date.format('MM/DD/YYYY'),
+                hasRange = true,
+                i;
+
+            for (i = 0; i < disableRange.length; i++) {
+                var rangeValue = $.trim(disableRange[i]);
+                if (!rangeValue) {
+                    continue;
+                }
+
+                var disableDateRange = rangeValue.split('-'),
+                    startDate = this.parse_date_value($.trim(disableDateRange[0]), momentFormat),
+                    endDate = this.parse_date_value($.trim(disableDateRange.slice(1).join('-')), momentFormat);
+
+                if (startDate && endDate && date.isBetween(startDate, endDate, 'day', '[]')) {
                     hasRange = false;
                     break;
                 }
             }
 
-            if (-1 !== restrictedDays.indexOf(day.toString()) ||
-                -1 !== disableDate.indexOf(date_string) ||
-                false === hasRange
-            ) {
-                return [false, "disabledDate"]
-            } else {
-                return [true, "enabledDate"]
-            }
+            return (-1 !== restrictedDays.indexOf(day.toString()) ||
+                -1 !== disableDate.indexOf(dateStringShort) ||
+                -1 !== disableDate.indexOf(dateStringLong) ||
+                false === hasRange);
         },
     });
 

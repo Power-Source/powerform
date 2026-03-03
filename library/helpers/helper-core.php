@@ -166,7 +166,8 @@ function powerform_admin_enqueue_styles( $version ) {
  * @since 1.0
  */
 function powerform_admin_jquery_ui() {
-	wp_enqueue_script( 'jquery-ui-powerform', powerform_plugin_url() . 'assets/js/library/jquery-ui.min.js', array( 'jquery' ), '1.12.1', false );
+	// Backward compatibility for existing builder pages calling this function.
+	powerform_admin_jquery_ui_init();
 }
 
 /**
@@ -175,15 +176,36 @@ function powerform_admin_jquery_ui() {
  * @since 1.0
  */
 function powerform_admin_jquery_ui_init() {
-	wp_enqueue_script( 'jquery-ui-core' );
-	wp_enqueue_script( 'jquery-ui-widget' );
-	wp_enqueue_script( 'jquery-ui-mouse' );
-	wp_enqueue_script( 'jquery-ui-tabs' );
-	wp_enqueue_script( 'jquery-ui-sortable' );
-	wp_enqueue_script( 'jquery-ui-draggable' );
-	wp_enqueue_script( 'jquery-ui-droppable' );
-	wp_enqueue_script( 'jquery-ui-datepicker' );
-	wp_enqueue_script( 'jquery-ui-resize' );
+	// Load jQuery UI interactions from CDN to avoid ClassicPress deprecated core handles.
+	// Builder requires sortable/draggable/droppable for field drag-and-drop functionality.
+	wp_enqueue_script(
+		'powerform-jquery-ui-interactions',
+		'https://code.jquery.com/ui/1.13.2/jquery-ui.min.js',
+		array( 'jquery' ),
+		'1.13.2',
+		true
+	);
+
+	wp_enqueue_script(
+		'powerform-custom-form-moment',
+		powerform_plugin_url() . 'assets/js/library/moment.min.js',
+		array( 'jquery' ),
+		'2.22.2',
+		true
+	);
+	wp_enqueue_script(
+		'powerform-field-datepicker-range',
+		powerform_plugin_url() . 'assets/js/library/daterangepicker.min.js',
+		array( 'jquery', 'powerform-custom-form-moment' ),
+		'3.1.0',
+		true
+	);
+	wp_enqueue_style(
+		'powerform-field-datepicker-range-css',
+		powerform_plugin_url() . 'assets/css/daterangepicker.min.css',
+		array(),
+		'3.1.0'
+	);
 	wp_enqueue_style( 'wp-color-picker' );
 }
 
@@ -250,6 +272,60 @@ function powerform_admin_enqueue_scripts( $version, $data = array(), $l10n = arr
 }
 
 /**
+ * Enqueue common libraries used by builder screens.
+ *
+ * @since 1.0
+ *
+ * @param string $version
+ */
+function powerform_admin_enqueue_builder_common_libs( $version ) {
+	wp_enqueue_script( 'select2-powerform', powerform_plugin_url() . 'assets/js/library/select2.full.min.js', array( 'jquery' ), $version, true );
+	wp_enqueue_script( 'ace-editor', powerform_plugin_url() . 'assets/js/library/ace/ace.js', array( 'jquery' ), $version, true );
+	wp_enqueue_script( 'google-charts', powerform_plugin_url() . 'assets/js/library/google-charts-loader.js', array( 'jquery' ), $version, true );
+
+	powerform_enqueue_editor_safe();
+
+	if ( function_exists( 'wp_enqueue_media' ) ) {
+		wp_enqueue_media();
+	}
+}
+
+/**
+ * Enqueue admin layout script for builder screens and localize shared data.
+ *
+ * @since 1.0
+ *
+ * @param string $version
+ * @param array  $data
+ * @param array  $l10n
+ * @param array  $deps
+ * @param bool   $in_footer
+ */
+function powerform_admin_enqueue_builder_layout( $version, $data = array(), $l10n = array(), $deps = array( 'jquery' ), $in_footer = false ) {
+	wp_enqueue_script( 'powerform-admin-layout', powerform_plugin_url() . 'build/admin/layout.js', $deps, $version, $in_footer );
+	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
+	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
+}
+
+/**
+ * Register, localize and enqueue a builder app script.
+ *
+ * @since 1.0
+ *
+ * @param string $handle
+ * @param string $src
+ * @param array  $deps
+ * @param string $version
+ * @param array  $data   (unused - kept for BC; data should be localized on layout handle)
+ * @param array  $l10n   (unused - kept for BC; l10n should be localized on layout handle)
+ */
+function powerform_admin_enqueue_builder_app( $handle, $src, $deps, $version, $data = array(), $l10n = array() ) {
+	wp_register_script( $handle, $src, $deps, $version, true );
+	// Do NOT localize here - powerformData/powerforml10n are already localized on powerform-admin-layout
+	wp_enqueue_script( $handle );
+}
+
+/**
  * Enqueue admin scripts
  *
  * @since 1.0
@@ -257,16 +333,7 @@ function powerform_admin_enqueue_scripts( $version, $data = array(), $l10n = arr
  * @param $version
  */
 function powerform_admin_enqueue_scripts_forms( $version, $data = array(), $l10n = array() ) {
-	wp_enqueue_script( 'select2-powerform', powerform_plugin_url() . 'assets/js/library/select2.full.min.js', array( 'jquery' ), $version, true );
-	wp_enqueue_script( 'ace-editor', powerform_plugin_url() . 'assets/js/library/ace/ace.js', array( 'jquery' ), $version, true );
-	wp_enqueue_script( 'google-charts', powerform_plugin_url() . 'assets/js/library/google-charts-loader.js', array( 'jquery' ), $version, true );
-
-	// Use ClassicPress-compatible editor enqueue
-	powerform_enqueue_editor_safe();
-	
-	if ( function_exists( 'wp_enqueue_media' ) ) {
-		wp_enqueue_media();
-	}
+	powerform_admin_enqueue_builder_common_libs( $version );
 
 	// Ensure React is available for ClassicPress - load in HEAD (false parameter)
 	if ( ! wp_script_is( 'react', 'registered' ) ) {
@@ -279,25 +346,16 @@ function powerform_admin_enqueue_scripts_forms( $version, $data = array(), $l10n
 	wp_enqueue_script( 'react' );
 	wp_enqueue_script( 'react-dom' );
 
-	// Load admin layout in footer so DOM is ready
-	wp_enqueue_script( 'powerform-admin-layout', powerform_plugin_url() . 'build/admin/layout.js', array( 'jquery', 'react', 'react-dom' ), $version, true );
-	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
-	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
-	
-	// Complete dependencies including Backbone (which depends on Underscore)
-	wp_register_script(
+	powerform_admin_enqueue_builder_layout( $version, $data, $l10n, array( 'jquery', 'react', 'react-dom' ), true );
+
+	powerform_admin_enqueue_builder_app(
 		'powerform-form-builder',
 		powerform_plugin_url() . 'assets/js/form-scripts.js',
-		array( 'jquery', 'underscore', 'backbone', 'react', 'react-dom', 'powerform-admin-layout' ),
+		array( 'jquery', 'underscore', 'backbone', 'react', 'react-dom', 'powerform-admin-layout', 'powerform-jquery-ui-interactions' ),
 		$version ? $version : '1.0',
-		true
+		$data,
+		$l10n
 	);
-	
-	wp_enqueue_script( 'powerform-form-builder' );
-	
-	// Localize AFTER enqueuing
-	wp_localize_script( 'powerform-form-builder', 'powerformData', $data );
-	wp_localize_script( 'powerform-form-builder', 'powerforml10n', $l10n );
 	
 	powerform_enqueue_color_picker_alpha( $version );
 	
@@ -334,39 +392,23 @@ function powerform_enqueue_color_picker_alpha( $version ) {
  * @param $version
  */
 function powerform_admin_enqueue_scripts_polls( $version, $data = array(), $l10n = array() ) {
-	wp_enqueue_script( 'select2-powerform', powerform_plugin_url() . 'assets/js/library/select2.full.min.js', array( 'jquery' ), $version, true );
-	wp_enqueue_script( 'ace-editor', powerform_plugin_url() . 'assets/js/library/ace/ace.js', array( 'jquery' ), $version, true );
-	wp_enqueue_script( 'google-charts', powerform_plugin_url() . 'assets/js/library/google-charts-loader.js', array( 'jquery' ), $version, true );
-
-	// React is already bundled in poll-scripts.js, don't enqueue separately
-	// Use ClassicPress-compatible editor enqueue
-	powerform_enqueue_editor_safe();
-	
-	if ( function_exists( 'wp_enqueue_media' ) ) {
-		wp_enqueue_media();
-	}
-
-	wp_enqueue_script( 'powerform-admin-layout', powerform_plugin_url() . 'build/admin/layout.js', array( 'jquery' ), $version, false );
-	// Localize layout script
-	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
-	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
-	
-	wp_register_script(
+	powerform_admin_enqueue_builder_common_libs( $version );
+	powerform_admin_enqueue_builder_layout( $version, $data, $l10n, array( 'jquery' ), false );
+	powerform_admin_enqueue_builder_app(
 		'powerform-admin',
 		powerform_plugin_url() . 'assets/js/poll-scripts.js',
 		array(
 			'jquery',
 			'wp-color-picker',
+			'powerform-admin-layout',
+			'powerform-jquery-ui-interactions',
 		),
 		$version,
-		true
+		$data,
+		$l10n
 	);
 
 	powerform_enqueue_color_picker_alpha( $version );
-
-	wp_localize_script( 'powerform-admin', 'powerformData', $data );
-	wp_localize_script( 'powerform-admin', 'powerforml10n', $l10n );
-	wp_enqueue_script( 'powerform-admin' );
 }
 
 /**
@@ -377,42 +419,25 @@ function powerform_admin_enqueue_scripts_polls( $version, $data = array(), $l10n
  * @param $version
  */
 function powerform_admin_enqueue_scripts_knowledge( $version, $data = array(), $l10n = array() ) {
-	wp_enqueue_script( 'select2-powerform', powerform_plugin_url() . 'assets/js/library/select2.full.min.js', array( 'jquery' ), $version, true );
-	wp_enqueue_script( 'ace-editor', powerform_plugin_url() . 'assets/js/library/ace/ace.js', array( 'jquery' ), $version, true );
-	wp_enqueue_script( 'google-charts', powerform_plugin_url() . 'assets/js/library/google-charts-loader.js', array( 'jquery' ), $version, true );
-
-	// React is already bundled in personality-scripts.js, don't enqueue separately
-
-	// Use ClassicPress-compatible editor enqueue
-	powerform_enqueue_editor_safe();
-	
-	if ( function_exists( 'wp_enqueue_media' ) ) {
-		wp_enqueue_media();
-	}
-
-	wp_enqueue_script( 'powerform-admin-layout', powerform_plugin_url() . 'build/admin/layout.js', array( 'jquery' ), $version, false );
-	// Localize layout script
-	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
-	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
-	
-	wp_register_script(
+	powerform_admin_enqueue_builder_common_libs( $version );
+	powerform_admin_enqueue_builder_layout( $version, $data, $l10n, array( 'jquery' ), false );
+	powerform_admin_enqueue_builder_app(
 		'powerform-admin',
 		powerform_plugin_url() . 'assets/js/knowledge-scripts.js',
 		array(
 			'jquery',
 			'wp-color-picker',
+			'powerform-admin-layout',
+			'powerform-jquery-ui-interactions',
 		),
 		$version,
-		true
+		$data,
+		$l10n
 	);
 
-	wp_enqueue_script( 'powerform-jquery-ui-touch', powerform_plugin_url() . 'assets/js/library/jquery.ui.touch-punch.min.js', array( 'jquery' ), $version, true );
+	wp_enqueue_script( 'powerform-jquery-ui-touch', powerform_plugin_url() . 'assets/js/library/jquery.ui.touch-punch.min.js', array( 'jquery', 'powerform-jquery-ui-interactions' ), $version, true );
 
 	powerform_enqueue_color_picker_alpha( $version );
-
-	wp_localize_script( 'powerform-admin', 'powerformData', $data );
-	wp_localize_script( 'powerform-admin', 'powerforml10n', $l10n );
-	wp_enqueue_script( 'powerform-admin' );
 }
 
 
@@ -424,9 +449,7 @@ function powerform_admin_enqueue_scripts_knowledge( $version, $data = array(), $
  * @param $version
  */
 function powerform_admin_enqueue_scripts_personality( $version, $data = array(), $l10n = array() ) {
-	wp_enqueue_script( 'select2-powerform', powerform_plugin_url() . 'assets/js/library/select2.full.min.js', array( 'jquery' ), $version, true );
-	wp_enqueue_script( 'ace-editor', powerform_plugin_url() . 'assets/js/library/ace/ace.js', array( 'jquery' ), $version, true );
-	wp_enqueue_script( 'google-charts', powerform_plugin_url() . 'assets/js/library/google-charts-loader.js', array( 'jquery' ), $version, true );
+	powerform_admin_enqueue_builder_common_libs( $version );
 
 	// Ensure React is available for ClassicPress
 	if ( ! wp_script_is( 'react', 'registered' ) ) {
@@ -438,19 +461,8 @@ function powerform_admin_enqueue_scripts_personality( $version, $data = array(),
 	wp_enqueue_script( 'react' );
 	wp_enqueue_script( 'react-dom' );
 
-	// Use ClassicPress-compatible editor enqueue
-	powerform_enqueue_editor_safe();
-	
-	if ( function_exists( 'wp_enqueue_media' ) ) {
-		wp_enqueue_media();
-	}
-
-	wp_enqueue_script( 'powerform-admin-layout', powerform_plugin_url() . 'build/admin/layout.js', array( 'jquery' ), $version, false );
-	// Localize layout script
-	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
-	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
-	
-	wp_register_script(
+	powerform_admin_enqueue_builder_layout( $version, $data, $l10n, array( 'jquery' ), false );
+	powerform_admin_enqueue_builder_app(
 		'powerform-admin',
 		powerform_plugin_url() . 'assets/js/personality-scripts.js',
 		array(
@@ -458,18 +470,17 @@ function powerform_admin_enqueue_scripts_personality( $version, $data = array(),
 			'wp-color-picker',
 			'react',
 			'react-dom',
+			'powerform-admin-layout',
+			'powerform-jquery-ui-interactions',
 		),
 		$version,
-		true
+		$data,
+		$l10n
 	);
 
 	powerform_enqueue_color_picker_alpha( $version );
 
-	wp_enqueue_script( 'powerform-jquery-ui-touch', powerform_plugin_url() . 'assets/js/library/jquery.ui.touch-punch.min.js', array( 'jquery' ), $version, true );
-
-	wp_localize_script( 'powerform-admin', 'powerformData', $data );
-	wp_localize_script( 'powerform-admin', 'powerforml10n', $l10n );
-	wp_enqueue_script( 'powerform-admin' );
+	wp_enqueue_script( 'powerform-jquery-ui-touch', powerform_plugin_url() . 'assets/js/library/jquery.ui.touch-punch.min.js', array( 'jquery', 'powerform-jquery-ui-interactions' ), $version, true );
 }
 
 /**

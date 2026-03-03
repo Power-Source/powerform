@@ -18,7 +18,7 @@
 
 				<button class="psource-box--action"><?php require $icon_close; ?></button>
 
-				<button class="psource-sr-only"><?php esc_html_e( 'Close modal', Powerform::DOMAIN ); ?></button>
+				<button class="psource-sr-only"><?php esc_html_e( 'Box schließen', Powerform::DOMAIN ); ?></button>
 
 			</div>
 

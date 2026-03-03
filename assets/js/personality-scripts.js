@@ -1840,7 +1840,11 @@
                 var l = t.route,
                     c = (r || l.location).pathname;
                 return Object(h.a)(c, { path: a, strict: o, exact: i, sensitive: s }, l.match)
-            }, t.prototype.componentWillMount = function() { s()(!(this.props.component && this.props.render), "You should not use <Route component> and <Route render> in the same route; <Route render> will be ignored"), s()(!(this.props.component && this.props.children && !y(this.props.children)), "You should not use <Route component> and <Route children> in the same route; <Route children> will be ignored"), s()(!(this.props.render && this.props.children && !y(this.props.children)), "You should not use <Route render> and <Route children> in the same route; <Route children> will be ignored") }, t.prototype.componentWillReceiveProps = function(e, t) { s()(!(e.location && !this.props.location), '<Route> elements should not change from uncontrolled to controlled (or vice versa). You initially used no "location" prop and then provided one on a subsequent render.'), s()(!(!e.location && this.props.location), '<Route> elements should not change from controlled to uncontrolled (or vice versa). You provided a "location" prop initially but omitted it on a subsequent render.'), this.setState({ match: this.computeMatch(e, t.router) }) }, t.prototype.render = function() {
+            }, t.prototype.componentWillMount = function() {
+                s()(!(this.props.component && this.props.render), "You should not use <Route component> and <Route render> in the same route; <Route render> will be ignored"), s()(!(this.props.component && this.props.children && !y(this.props.children)), "You should not use <Route component> and <Route children> in the same route; <Route children> will be ignored"), s()(!(this.props.render && this.props.children && !y(this.props.children)), "You should not use <Route render> and <Route children> in the same route; <Route children> will be ignored")
+            }, t.prototype.componentWillReceiveProps = function(e, t) {
+                s()(!(e.location && !this.props.location), '<Route> elements should not change from uncontrolled to controlled (or vice versa). You initially used no "location" prop and then provided one on a subsequent render.'), s()(!(!e.location && this.props.location), '<Route> elements should not change from controlled to uncontrolled (or vice versa). You provided a "location" prop initially but omitted it on a subsequent render.'), this.setState({ match: this.computeMatch(e, t.router) })
+            }, t.prototype.render = function() {
                 var e = this.state.match,
                     t = this.props,
                     n = t.children,
@@ -7851,8 +7855,8 @@
         p = r(f),
         d = n(528),
         h = r(d),
-        m = (0, c.default)(powerformData.currentForm);
-    p.default.setLocale(powerforml10n.locale), window.powerformChanges = { questions: [], results: [], settings: !1 }, (0, i.render)(o.default.createElement(s.Provider, { store: m }, o.default.createElement(l.MemoryRouter, null, o.default.createElement(l.Route, { component: h.default }))), document.getElementById("powerform-personality-builder"))
+        m = (0, c.default)((window.powerformData = window.powerformData || {}, window.powerformData.currentForm = window.powerformData.currentForm || { wrappers: [], settings: {}, notifications: [] }, window.powerformData.currentForm));
+    p.default.setLocale(powerforml10n.locale), window.powerformChanges = { questions: [], results: [], settings: !1 }; function powerformMountPersonalityBuilder() { var e = document.getElementById("powerform-personality-builder"); e && (0, i.render)(o.default.createElement(s.Provider, { store: m }, o.default.createElement(l.MemoryRouter, null, o.default.createElement(l.Route, { component: h.default }))), e) } document.getElementById("powerform-personality-builder") ? powerformMountPersonalityBuilder() : jQuery(function() { powerformMountPersonalityBuilder() })
 }, function(e, t, n) {
     "use strict";
 

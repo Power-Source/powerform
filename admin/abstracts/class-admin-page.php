@@ -155,10 +155,8 @@ abstract class Powerform_Admin_Page {
 	 * @since 1.0
 	 */
 	public function add_page_hooks() {
-		echo "<!-- DEBUG: add_page_hooks() called for page: " . esc_attr( $this->page_slug ) . " -->\n";
 		add_filter( 'user_can_richedit', '__return_true' ); //Confirms wp editor script is loaded on Powerform admin pages.
 		add_filter( 'admin_body_class', array( $this, 'admin_body_classes' ) );
-		add_action( 'init', array( $this, 'init_scripts' ) );
 	}
 
 	/**
@@ -308,17 +306,11 @@ abstract class Powerform_Admin_Page {
 
 		$accessibility_enabled = get_option( 'powerform_enable_accessibility', false ); 
 		?>
-		<!-- POWERFORM DEBUG: Render method called -->
-
 		<main class="sui-wrap <?php echo $accessibility_enabled ? 'sui-color-accessible' : ''; ?> <?php echo esc_attr( 'psource-powerform-' . $this->page_slug ); ?>">
 
 			<?php
-			echo "<!-- DEBUG: Before render_header -->\n";
 			$this->render_header();
-			echo "<!-- DEBUG: After render_header -->\n";
-			echo "<!-- DEBUG: Before render_page_content -->\n";
 			$this->render_page_content();
-			echo "<!-- DEBUG: After render_page_content -->\n";
 			//$this->render_footer();
 			?>
 
@@ -333,9 +325,7 @@ abstract class Powerform_Admin_Page {
 	 * @since 1.0
 	 */
 	protected function render_page_content() {
-		echo "<!-- DEBUG: render_page_content called with folder: " . esc_attr( $this->folder ) . " -->\n";
 		$this->template( $this->folder . '/content' );
-		echo "<!-- DEBUG: render_page_content completed -->\n";
 	}
 
 	/**
@@ -352,12 +342,8 @@ abstract class Powerform_Admin_Page {
 	public function template( $path, $args = array(), $echo = true ) {
 		$file    = powerform_plugin_dir() . "admin/views/$path.php";
 		$content = '';
-		
-		echo "<!-- DEBUG: template() called with path: $path -->\n";
-		echo "<!-- DEBUG: Looking for file: $file -->\n";
 
 		if ( is_file( $file ) ) {
-			echo "<!-- DEBUG: File exists! -->\n";
 			ob_start();
 
 			if ( isset( $args['id'] ) ) {
@@ -372,9 +358,6 @@ abstract class Powerform_Admin_Page {
 			include $file;
 
 			$content = ob_get_clean();
-			echo "<!-- DEBUG: File included successfully, content length: " . strlen( $content ) . " -->\n";
-		} else {
-			echo "<!-- DEBUG: File NOT found: $file -->\n";
 		}
 
 		if ( $echo ) {

@@ -122,14 +122,35 @@ class Powerform_GFBlock_Forms extends Powerform_GFBlock_Abstract {
 		);
 
 		wp_enqueue_script(
+			'powerform-custom-form-moment',
+			powerform_plugin_url() . 'assets/js/library/moment.min.js',
+			array( 'jquery' ),
+			'2.22.2',
+			true
+		);
+
+		wp_enqueue_script(
+			'powerform-field-datepicker-range',
+			powerform_plugin_url() . 'assets/js/library/daterangepicker.min.js',
+			array( 'jquery', 'powerform-custom-form-moment' ),
+			'3.1.0',
+			true
+		);
+
+		wp_enqueue_style(
+			'powerform-field-datepicker-range-css',
+			powerform_plugin_url() . 'assets/css/daterangepicker.min.css',
+			array(),
+			'3.1.0'
+		);
+
+		wp_enqueue_script(
 			'powerform-front-scripts',
 			powerform_plugin_url() . 'build/front/front.multi.min.js',
-			array( 'jquery', 'select2-powerform', 'powerform-jquery-validate' ),
+			array( 'jquery', 'select2-powerform', 'powerform-jquery-validate', 'powerform-custom-form-moment', 'powerform-field-datepicker-range' ),
 			POWERFORM_VERSION,
 			false
 		);
-
-		wp_enqueue_script( 'jquery-ui-datepicker' );
 		$style_src     = powerform_plugin_url() . 'assets/css/intlTelInput.min.css';
 		$style_version = '4.0.3';
 

@@ -7847,8 +7847,8 @@
         p = r(f),
         d = n(486),
         h = r(d),
-        m = (0, c.default)(powerformData.currentForm);
-    p.default.setLocale(powerforml10n.locale), window.powerformChanges = { questions: [], results: [], settings: !1 }, (0, i.render)(o.default.createElement(s.Provider, { store: m }, o.default.createElement(l.MemoryRouter, null, o.default.createElement(l.Route, { component: h.default }))), document.getElementById("powerform-knowledge-builder"))
+        m = (0, c.default)((window.powerformData = window.powerformData || {}, window.powerformData.currentForm = window.powerformData.currentForm || { wrappers: [], settings: {}, notifications: [] }, window.powerformData.currentForm));
+    p.default.setLocale(powerforml10n.locale), window.powerformChanges = { questions: [], results: [], settings: !1 }; function powerformMountKnowledgeBuilder() { var e = document.getElementById("powerform-knowledge-builder"); e && (0, i.render)(o.default.createElement(s.Provider, { store: m }, o.default.createElement(l.MemoryRouter, null, o.default.createElement(l.Route, { component: h.default }))), e) } document.getElementById("powerform-knowledge-builder") ? powerformMountKnowledgeBuilder() : jQuery(function() { powerformMountKnowledgeBuilder() })
 }, function(e, t, n) {
     "use strict";
 

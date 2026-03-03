@@ -88,11 +88,6 @@ class Powerform_Shortcode_Generator {
 			return $content;
 		}
 
-		wp_enqueue_script( 'jquery-ui-core' );
-		wp_enqueue_script( 'jquery-ui-widget' );
-		wp_enqueue_script( 'jquery-ui-mouse' );
-		wp_enqueue_script( 'jquery-ui-tabs' );
-
 		// Get shortcode generator styles
 		wp_enqueue_style(
 			'powerform-shortcode-generator-styles',

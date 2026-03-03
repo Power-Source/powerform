@@ -229,12 +229,16 @@ foreach ( $template_vars as $key => $val ) {
 <script type="text/javascript">
     ( function ($) {
         $( document ).ready(function (e) {
-            $( '#due_date' ).datepicker({
-                beforeShow: function( input, inst ) {
-                    $( '#ui-datepicker-div' ).addClass( 'sui-calendar' );
-                },
-                'dateFormat': 'd MM yy'
-            });
+			if ( typeof $.fn.daterangepicker === 'function' && typeof moment !== 'undefined' ) {
+				$( '#due_date' ).daterangepicker({
+					singleDatePicker: true,
+					autoUpdateInput: true,
+					showDropdowns: true,
+					locale: {
+						format: 'D MMMM YYYY'
+					}
+				});
+			}
         });
     })(jQuery);
 </script>
