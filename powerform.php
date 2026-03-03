@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: PS Powerform
- * Version: 1.0.0
+ * Version: 1.0.1
  * Plugin URI:  https://power-source.github.io/powerform/
  * Description: Erfasse Benutzerinformationen (so detailliert wie Du möchtest), beteilige Benutzer an interaktiven Umfragen, die Echtzeitergebnisse und Grafiken, Quizfragen im Facebook-Stil und Wissenstests ohne falsche Antwort anzeigen.
  * Author: PSOURCE
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'POWERFORM_VERSION' ) ) {
-	define( 'POWERFORM_VERSION', '1.0.0' );
+	define( 'POWERFORM_VERSION', '1.0.1' );
 }
 
 if ( ! defined( 'POWERFORM_SUI_VERSION' ) ) {

@@ -1,13 +1,13 @@
 === Powerform - Kontaktformular, Zahlungsformular & Custom Form Builder ===
 Plugin Name: Powerform - Kontaktformular, Zahlungsformular & Custom Form Builder
-Version: 1.0.0
+Version: 1.0.1
 Author: PSOURCE
 Author URI: https://github.com/Power-Source
 Contributors: PSOURCE, WebFactory
 Tags: classicpress, formulare, kontaktformular, formular plugin, zahlungsformular, custom form, form builder, paypal formular, formular erstellen, quiz, quiz builder, bestellformular, stripe zahlungen, paypal zahlungen, umfrage, poll
 Requires at least: 4.9
 Tested up to: 6.8.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 Requires PHP: 5.2.4
 Requires CP: 2.6.0
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
@@ -172,6 +172,14 @@ Ja! Mit dem eingebauten Import-Wizard kannst du alle CF7-Formulare mit wenigen K
 
 == Changelog ==
 
+= 1.0.1 =
+* 🔧 Enqueue-Layer refactored: Shared Helper-Funktionen für alle Builder-Screens
+* ✅ jQuery UI Deprecation-Fix: Eigener CDN-Handle statt deprecated ClassicPress core-handles
+* 🐛 Lokalisierung korrigiert: Doppelte wp_localize_script() Calls entfernt
+* ⚡ Dependency-Chain optimiert: powerform-admin-layout als explizite Dependency
+* 🧹 Duplicate script enqueues aus wizard-page entfernt (moment.js, daterangepicker)
+* 🚀 Form Builder zeigt wieder korrekt nach jQuery UI Migration
+
 = 1.0.0 =
 * 🎉 Erste öffentliche Version
 * 🏆 Speziell für ClassicPress 2.6.0+ entwickelt
@@ -187,6 +195,9 @@ Ja! Mit dem eingebauten Import-Wizard kannst du alle CF7-Formulare mit wenigen K
 
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Wichtiges Update: Behebt jQuery UI Deprecation-Warnung in ClassicPress 2.2.0+ und korrigiert Builder-Ladeprobleme. Empfohlenes Update für alle Nutzer! ✅
 
 = 1.0.0 =
 Willkommen bei Powerform - DEM Formular-Plugin für ClassicPress! Diese erste Version bringt dir alle Features, die du für professionelle Formulare auf deiner ClassicPress-Seite brauchst. 🚀
