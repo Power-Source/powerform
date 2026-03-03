@@ -658,7 +658,7 @@ abstract class Powerform_Field {
 
 			if ( 'clean' === $design ) {
 
-				$html .= sprintf( '<button class="powerform-upload--remove" style="display: none;">%s</button>', __( 'Remove', Powerform::DOMAIN ) );
+				$html .= sprintf( '<button class="powerform-upload--remove" style="display: none;">%s</button>', __( 'Entfernen', Powerform::DOMAIN ) );
 
 			} else {
 
@@ -669,8 +669,7 @@ abstract class Powerform_Field {
 						$html .= '<span class="powerform-icon-upload" aria-hidden="true"></span>';
 
 						$html .= '<p>';
-							$html .= sprintf( esc_html__( 'Drag and Drop (or) %1$sChoose Files%2$s', Powerform::DOMAIN ), '<a class="powerform-upload-file--' . $id . '" href="javascript:void(0)">', '</a>' );
-						$html .= '</p>';
+						$html .= sprintf( esc_html__( 'Ziehe Dateien hierher (oder) %1$sWähle Dateien%2$s', Powerform::DOMAIN ), '<a class="powerform-upload-file--' . $id . '" href="javascript:void(0)">', '</a>' );
 
 					$html .= '</div>';
 
@@ -682,35 +681,35 @@ abstract class Powerform_Field {
 
 							$html .= sprintf(
 								'<span>%s</span>',
-								__( 'Choose File', Powerform::DOMAIN )
-							);
-
-							$html .= '<span aria-hidden="true"></span>';
-
-						} else {
-							$html .= __( 'Choose File', Powerform::DOMAIN );
-						}
-
-					$html .= '</button>';
-
-					$html .= sprintf(
-						'<span data-empty-text="%s">%s</span>',
-						__( 'No file chosen', Powerform::DOMAIN ),
-						__( 'No file chosen', Powerform::DOMAIN )
-					);
-
-					$html .= '<button class="powerform-button-delete" style="display: none;">';
-
-						$html .= '<i class="powerform-icon-close" aria-hidden="true"></i>';
-
-						$html .= sprintf(
-							'<span class="powerform-screen-reader-only">%s</span>',
-							__( 'Delete uploaded file', Powerform::DOMAIN )
+							__( 'Datei wählen', Powerform::DOMAIN )
 						);
 
-					$html .= '</button>';
-				}
+						$html .= '<span aria-hidden="true"></span>';
+
+					} else {
+						$html .= __( 'Datei wählen', Powerform::DOMAIN );
+					}
+
+				$html .= '</button>';
+
+				$html .= sprintf(
+					'<span data-empty-text="%s">%s</span>',
+					__( 'Keine Datei ausgewählt', Powerform::DOMAIN ),
+					__( 'Keine Datei ausgewählt', Powerform::DOMAIN )
+				);
+
+				$html .= '<button class="powerform-button-delete" style="display: none;">';
+
+					$html .= '<i class="powerform-icon-close" aria-hidden="true"></i>';
+
+					$html .= sprintf(
+						'<span class="powerform-screen-reader-only">%s</span>',
+						__( 'Hochgeladene Datei löschen', Powerform::DOMAIN )
+					);
+
+				$html .= '</button>';
 			}
+		}
 
 		$html .= '</div>';
 

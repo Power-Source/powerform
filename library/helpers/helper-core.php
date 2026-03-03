@@ -111,7 +111,7 @@ function powerform_ajax_url() {
  */
 function powerform_validate_ajax( $action ) {
 	if ( ! powerform_is_user_allowed() || ! check_ajax_referer( $action ) ) {
-		wp_send_json_error( __( 'Invalid request, you are not allowed to do that action.', Powerform::DOMAIN ) );
+		wp_send_json_error( __( 'Ungültige Anfrage, du hast keine Berechtigung für diese Aktion.', Powerform::DOMAIN ) );
 	}
 }
 
@@ -375,12 +375,12 @@ function powerform_enqueue_color_picker_alpha( $version ) {
 	wp_enqueue_script( 'wp-color-picker-alpha', powerform_plugin_url() . 'assets/js/library/wp-color-picker-alpha.min.js', array( 'wp-color-picker' ), $version, true );
 
 	wp_localize_script( 'wp-color-picker-alpha', 'wpColorPickerL10n', array(
-		'clear'            => __( 'Clear', Powerform::DOMAIN ),
-		'clearAriaLabel'   => __( 'Clear color', Powerform::DOMAIN ),
-		'defaultString'    => __( 'Default', Powerform::DOMAIN ),
-		'defaultAriaLabel' => __( 'Select default color', Powerform::DOMAIN ),
-		'pick'             => __( 'Select Color', Powerform::DOMAIN ),
-		'defaultLabel'     => __( 'Color value', Powerform::DOMAIN ),
+		'clear'            => __( 'Leeren', Powerform::DOMAIN ),
+		'clearAriaLabel'   => __( 'Farbe löschen', Powerform::DOMAIN ),
+		'defaultString'    => __( 'Standard', Powerform::DOMAIN ),
+		'defaultAriaLabel' => __( 'Standardfarbe wählen', Powerform::DOMAIN ),
+		'pick'             => __( 'Farbe wählen', Powerform::DOMAIN ),
+		'defaultLabel'     => __( 'Farbwert', Powerform::DOMAIN ),
 	) );
 }
 
@@ -648,32 +648,32 @@ function powerform_localize_data() {
 	return array(
 		'ajaxUrl' => powerform_ajax_url(),
 		'cform'   => array(
-			'processing'                => __( 'Submitting form, please wait', Powerform::DOMAIN ),
-			'error'                     => __( 'An error occurred processing the form. Please try again', Powerform::DOMAIN ),
-			'upload_error'              => __( 'An upload error occurred processing the form. Please try again', Powerform::DOMAIN ),
-			'pagination_prev'           => __( 'Previous', Powerform::DOMAIN ),
-			'pagination_next'           => __( 'Next', Powerform::DOMAIN ),
-			'pagination_go'             => __( 'Submit', Powerform::DOMAIN ),
+			'processing'                => __( 'Formular wird gesendet, bitte warte...', Powerform::DOMAIN ),
+			'error'                     => __( 'Beim Verarbeiten des Formulars ist ein Fehler aufgetreten. Bitte versuche es erneut', Powerform::DOMAIN ),
+			'upload_error'              => __( 'Beim Datei-Upload ist ein Fehler aufgetreten. Bitte versuche es erneut', Powerform::DOMAIN ),
+			'pagination_prev'           => __( 'Zurück', Powerform::DOMAIN ),
+			'pagination_next'           => __( 'Weiter', Powerform::DOMAIN ),
+			'pagination_go'             => __( 'Absenden', Powerform::DOMAIN ),
 			'gateway'                   => array(
-				'processing' => __( 'Processing payment, please wait', Powerform::DOMAIN ),
-				'paid'       => __( 'Success! Payment confirmed. Submitting form, please wait', Powerform::DOMAIN ),
-				'error'      => __( 'Error! Something went wrong when verifying the payment', Powerform::DOMAIN ),
+				'processing' => __( 'Zahlung wird verarbeitet, bitte warte...', Powerform::DOMAIN ),
+				'paid'       => __( 'Erfolgreich! Zahlung bestätigt. Formular wird gesendet, bitte warte...', Powerform::DOMAIN ),
+				'error'      => __( 'Fehler! Bei der Zahlungsverifizierung ist etwas schiefgelaufen', Powerform::DOMAIN ),
 			),
-			'captcha_error'             => __( 'Invalid CAPTCHA', Powerform::DOMAIN ),
-			'no_file_chosen'            => __( 'No file chosen', Powerform::DOMAIN ),
+			'captcha_error'             => __( 'Ungültiges CAPTCHA', Powerform::DOMAIN ),
+			'no_file_chosen'            => __( 'Keine Datei ausgewählt', Powerform::DOMAIN ),
 			// This is the file "/build/js/utils.js" found into intlTelInput plugin. Renamed so it makes sense within the "js/library" directory context.
 			'intlTelInput_utils_script' => powerform_plugin_url() . 'assets/js/library/intlTelInputUtils.js',
-			'process_error'             => __( 'Please try again', Powerform::DOMAIN ),
+			'process_error'             => __( 'Bitte versuche es erneut', Powerform::DOMAIN ),
 		),
 		'poll'    => array(
-			'processing' => __( 'Submitting vote, please wait', Powerform::DOMAIN ),
-			'error'      => __( 'An error occurred saving the vote. Please try again', Powerform::DOMAIN ),
+			'processing' => __( 'Stimme wird abgegeben, bitte warte...', Powerform::DOMAIN ),
+			'error'      => __( 'Beim Speichern der Stimme ist ein Fehler aufgetreten. Bitte versuche es erneut', Powerform::DOMAIN ),
 		),
 		'select2' => array(
-			'load_more'       => __( 'Loading more results…', Powerform::DOMAIN ),
-			'no_result_found' => __( 'No results found', Powerform::DOMAIN ),
-			'searching'       => __( 'Searching…', Powerform::DOMAIN ),
-			'loaded_error'    => __( 'The results could not be loaded.', Powerform::DOMAIN ),
+			'load_more'       => __( 'Weitere Ergebnisse laden…', Powerform::DOMAIN ),
+			'no_result_found' => __( 'Keine Ergebnisse gefunden', Powerform::DOMAIN ),
+			'searching'       => __( 'Suche läuft…', Powerform::DOMAIN ),
+			'loaded_error'    => __( 'Die Ergebnisse konnten nicht geladen werden.', Powerform::DOMAIN ),
 		),
 	);
 }

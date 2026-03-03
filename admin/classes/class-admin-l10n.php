@@ -152,11 +152,11 @@ class Powerform_Admin_L10n {
 				'continue_button'         => __( 'Fortsetzen', Powerform::DOMAIN ),
 				'quiz_leads_toggle'		  => __( 'Sammel Leads für Dein Quiz', Powerform::DOMAIN ),
 				'create_quiz'			  => __( 'Quiz erstellen', Powerform::DOMAIN ),
-				'quiz_leads_desc'         => __( 'Wir erstellen automatisch ein Standardformular für die Lead-Generierung für Dich. Das Formular zur Lead-Generierung verwendet das Formularmodul. Einige der Einstellungen werden zwischen diesem Quiz und dem Lead-Formular geteilt.')
+				'quiz_leads_desc'         => __( 'Wir erstellen automatisch ein Standardformular für die Lead-Generierung für Dich. Das Formular zur Lead-Generierung verwendet das Formularmodul. Einige der Einstellungen werden zwischen diesem Quiz und dem Lead-Formular geteilt.', Powerform::DOMAIN )
 			),
 			'form'          => array(
 				'form_template_title'       => __( 'Wähle eine Vorlage', Powerform::DOMAIN ),
-				'form_template_description' => __( 'Passe eine unserer vorgefertigten Formularvorlagen an oder beginne bei Null.' ),
+				'form_template_description' => __( 'Passe eine unserer vorgefertigten Formularvorlagen an oder beginne bei Null.', Powerform::DOMAIN ),
 				'continue_button'           => __( 'Fortsetzen', Powerform::DOMAIN ),
 			),
 			'sidebar'       => array(
@@ -221,7 +221,7 @@ class Powerform_Admin_L10n {
 				'form_based_data'       => __( 'Formulardaten hinzufügen', Powerform::DOMAIN ),
 				'been_saved'            => __( 'wurde gespeichert.', Powerform::DOMAIN ),
 				'been_published'        => __( 'wurde veröffentlicht.', Powerform::DOMAIN ),
-				'error_saving'          => __( 'Fehler! Formular kann nicht gespeichert werden.' ),
+				'error_saving'          => __( 'Fehler! Formular kann nicht gespeichert werden.', Powerform::DOMAIN ),
 				'default_value'         => __( 'Standardwert', Powerform::DOMAIN ),
 				'admin_email'           => get_option( 'admin_email' ),
 				'delete_question'       => __( 'Lösche diese Frage', Powerform::DOMAIN ),

@@ -18,9 +18,9 @@ class Powerform_CForm_New_Page extends Powerform_Admin_Page {
 	 */
 	public function getWizardTitle() {
 		if ( isset( $_REQUEST['id'] ) ) { // WPCS: CSRF OK
-			return __( "Edit Form", Powerform::DOMAIN );
+			return __( "Formular bearbeiten", Powerform::DOMAIN );
 		} else {
-			return __( "New Form", Powerform::DOMAIN );
+			return __( "Neues Formular", Powerform::DOMAIN );
 		}
 	}
 

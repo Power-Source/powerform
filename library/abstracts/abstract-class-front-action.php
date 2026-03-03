@@ -175,7 +175,7 @@ abstract class Powerform_Front_Action {
 				if ( false === $valid['ext'] ) {
 					return array(
 						'success' => false,
-						'message' => __( 'Error saving form. Uploaded file extension is not allowed.', Powerform::DOMAIN ),
+						'message' => __( 'Fehler beim Speichern des Formulars. Die Dateiendung ist nicht erlaubt.', Powerform::DOMAIN ),
 					);
 				}
 
@@ -183,7 +183,7 @@ abstract class Powerform_Front_Action {
 				if ( false === $allow ) {
 					return array(
 						'success' => false,
-						'message' => __( 'Error saving form. Uploaded file extension is not allowed.', Powerform::DOMAIN ),
+						'message' => __( 'Fehler beim Speichern des Formulars. Die Dateiendung ist nicht erlaubt.', Powerform::DOMAIN ),
 					);
 				}
 
@@ -194,7 +194,7 @@ abstract class Powerform_Front_Action {
 				if ( ! is_uploaded_file( $_FILES[ $field_name ]['tmp_name'] ) ) {
 					return array(
 						'success' => false,
-						'message' => __( 'Error saving form. Failed to read uploaded file.', Powerform::DOMAIN ),
+						'message' => __( 'Fehler beim Speichern des Formulars. Die hochgeladene Datei konnte nicht gelesen werden.', Powerform::DOMAIN ),
 					);
 				}
 
@@ -209,14 +209,14 @@ abstract class Powerform_Front_Action {
 
 					return array(
 						'success' => false,
-						'message' => sprintf( /* translators: ... */ __( 'Error saving form. Uploaded file size exceeds %1$s upload limit. ', Powerform::DOMAIN ), $max_size ),
+						'message' => sprintf( /* translators: ... */ __( 'Fehler beim Speichern des Formulars. Die Dateigröße überschreitet das %1$s Upload-Limit. ', Powerform::DOMAIN ), $max_size ),
 					);
 				}
 
 				if ( UPLOAD_ERR_OK !== $_FILES[ $field_name ]['error'] ) {
 					return array(
 						'success' => false,
-						'message' => __( 'Error saving form. Upload error. ', Powerform::DOMAIN ),
+						'message' => __( 'Fehler beim Speichern des Formulars. Upload-Fehler. ', Powerform::DOMAIN ),
 					);
 				}
 
@@ -243,7 +243,7 @@ abstract class Powerform_Front_Action {
 				} else {
 					return array(
 						'success' => false,
-						'message' => __( 'Error saving form. Upload error. ', Powerform::DOMAIN ),
+						'message' => __( 'Fehler beim Speichern des Formulars. Upload-Fehler. ', Powerform::DOMAIN ),
 					);
 				}
 			}
