@@ -302,9 +302,30 @@ function powerform_admin_enqueue_builder_common_libs( $version ) {
  * @param bool   $in_footer
  */
 function powerform_admin_enqueue_builder_layout( $version, $data = array(), $l10n = array(), $deps = array( 'jquery' ), $in_footer = false ) {
-	wp_enqueue_script( 'powerform-admin-layout', powerform_plugin_url() . 'build/admin/layout.js', $deps, $version, $in_footer );
+	// Deregister if already registered to ensure clean slate
+	if ( wp_script_is( 'powerform-admin-layout', 'registered' ) ) {
+		wp_deregister_script( 'powerform-admin-layout' );
+	}
+	// Register fresh
+	wp_register_script( 'powerform-admin-layout', powerform_plugin_url() . 'build/admin/layout.js', $deps, $version, $in_footer );
+	
+	// Add data as inline script BEFORE the layout script loads
+	$data_json = wp_json_encode( $data );
+	$l10n_json = wp_json_encode( $l10n );
+	wp_add_inline_script( 'powerform-admin-layout', 
+		"window.powerformData = window.powerformData || $data_json; window.powerforml10n = window.powerforml10n || $l10n_json;", 
+		'before' 
+	);
+	
+	// Also use standard localize as backup
 	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
 	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
+	
+	// Debug
+	wp_add_inline_script( 'powerform-admin-layout', 'console.log("Layout loaded - powerformData keys:", powerformData ? Object.keys(powerformData).length : "undefined", "powerforml10n keys:", powerforml10n ? Object.keys(powerforml10n).length : "undefined");', 'after' );
+	
+	// Then enqueue
+	wp_enqueue_script( 'powerform-admin-layout' );
 }
 
 /**
@@ -321,7 +342,13 @@ function powerform_admin_enqueue_builder_layout( $version, $data = array(), $l10
  */
 function powerform_admin_enqueue_builder_app( $handle, $src, $deps, $version, $data = array(), $l10n = array() ) {
 	wp_register_script( $handle, $src, $deps, $version, true );
-	// Do NOT localize here - powerformData/powerforml10n are already localized on powerform-admin-layout
+	// Localize on the builder app script as well to ensure data is available
+	if ( ! empty( $data ) ) {
+		wp_localize_script( $handle, 'powerformData', $data );
+	}
+	if ( ! empty( $l10n ) ) {
+		wp_localize_script( $handle, 'powerforml10n', $l10n );
+	}
 	wp_enqueue_script( $handle );
 }
 
@@ -393,13 +420,36 @@ function powerform_enqueue_color_picker_alpha( $version ) {
  */
 function powerform_admin_enqueue_scripts_polls( $version, $data = array(), $l10n = array() ) {
 	powerform_admin_enqueue_builder_common_libs( $version );
-	powerform_admin_enqueue_builder_layout( $version, $data, $l10n, array( 'jquery' ), false );
+
+	// Enqueue WordPress core scripts
+	wp_enqueue_script( 'underscore' );
+	wp_enqueue_script( 'backbone' );
+
+	// Ensure React is available - load in HEAD (false parameter)
+	if ( ! wp_script_is( 'react', 'registered' ) ) {
+		wp_register_script( 'react', powerform_plugin_url() . 'assets/js/library/react.min.js', array(), '16.14.0', false );
+	}
+	if ( ! wp_script_is( 'react-dom', 'registered' ) ) {
+		wp_register_script( 'react-dom', powerform_plugin_url() . 'assets/js/library/react-dom.min.js', array( 'react' ), '16.14.0', false );
+	}
+	wp_enqueue_script( 'react' );
+	wp_enqueue_script( 'react-dom' );
+
+	powerform_admin_enqueue_builder_layout( $version, $data, $l10n, array( 'jquery', 'react', 'react-dom' ), true );
+	
+	// Force re-localize to ensure data is available
+	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
+	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
+	
 	powerform_admin_enqueue_builder_app(
-		'powerform-admin',
+		'powerform-poll-builder',
 		powerform_plugin_url() . 'assets/js/poll-scripts.js',
 		array(
 			'jquery',
-			'wp-color-picker',
+			'underscore',
+			'backbone',
+			'react',
+			'react-dom',
 			'powerform-admin-layout',
 			'powerform-jquery-ui-interactions',
 		),
@@ -408,7 +458,14 @@ function powerform_admin_enqueue_scripts_polls( $version, $data = array(), $l10n
 		$l10n
 	);
 
+	// Debug: Check if React is available
+	wp_add_inline_script( 'powerform-poll-builder', 'console.log("Poll Builder Loading - React available:", typeof React !== "undefined", "ReactDOM available:", typeof ReactDOM !== "undefined", "powerformData:", typeof powerformData !== "undefined", "powerforml10n:", typeof powerforml10n !== "undefined");', 'before' );
+
 	powerform_enqueue_color_picker_alpha( $version );
+
+	// Also enqueue wp-color-picker separately
+	wp_enqueue_script( 'wp-color-picker' );
+	wp_enqueue_style( 'wp-color-picker' );
 }
 
 /**
@@ -420,13 +477,36 @@ function powerform_admin_enqueue_scripts_polls( $version, $data = array(), $l10n
  */
 function powerform_admin_enqueue_scripts_knowledge( $version, $data = array(), $l10n = array() ) {
 	powerform_admin_enqueue_builder_common_libs( $version );
-	powerform_admin_enqueue_builder_layout( $version, $data, $l10n, array( 'jquery' ), false );
+
+	// Enqueue WordPress core scripts
+	wp_enqueue_script( 'underscore' );
+	wp_enqueue_script( 'backbone' );
+
+	// Ensure React is available - load in HEAD (false parameter)
+	if ( ! wp_script_is( 'react', 'registered' ) ) {
+		wp_register_script( 'react', powerform_plugin_url() . 'assets/js/library/react.min.js', array(), '16.14.0', false );
+	}
+	if ( ! wp_script_is( 'react-dom', 'registered' ) ) {
+		wp_register_script( 'react-dom', powerform_plugin_url() . 'assets/js/library/react-dom.min.js', array( 'react' ), '16.14.0', false );
+	}
+	wp_enqueue_script( 'react' );
+	wp_enqueue_script( 'react-dom' );
+
+	powerform_admin_enqueue_builder_layout( $version, $data, $l10n, array( 'jquery', 'react', 'react-dom' ), true );
+	
+	// Force re-localize to ensure data is available
+	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
+	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
+	
 	powerform_admin_enqueue_builder_app(
-		'powerform-admin',
+		'powerform-knowledge-builder',
 		powerform_plugin_url() . 'assets/js/knowledge-scripts.js',
 		array(
 			'jquery',
-			'wp-color-picker',
+			'underscore',
+			'backbone',
+			'react',
+			'react-dom',
 			'powerform-admin-layout',
 			'powerform-jquery-ui-interactions',
 		),
@@ -438,6 +518,10 @@ function powerform_admin_enqueue_scripts_knowledge( $version, $data = array(), $
 	wp_enqueue_script( 'powerform-jquery-ui-touch', powerform_plugin_url() . 'assets/js/library/jquery.ui.touch-punch.min.js', array( 'jquery', 'powerform-jquery-ui-interactions' ), $version, true );
 
 	powerform_enqueue_color_picker_alpha( $version );
+
+	// Also enqueue wp-color-picker separately
+	wp_enqueue_script( 'wp-color-picker' );
+	wp_enqueue_style( 'wp-color-picker' );
 }
 
 
@@ -451,23 +535,33 @@ function powerform_admin_enqueue_scripts_knowledge( $version, $data = array(), $
 function powerform_admin_enqueue_scripts_personality( $version, $data = array(), $l10n = array() ) {
 	powerform_admin_enqueue_builder_common_libs( $version );
 
-	// Ensure React is available for ClassicPress
+	// Enqueue WordPress core scripts
+	wp_enqueue_script( 'underscore' );
+	wp_enqueue_script( 'backbone' );
+
+	// Ensure React is available - load in HEAD (false parameter)
 	if ( ! wp_script_is( 'react', 'registered' ) ) {
-		wp_register_script( 'react', powerform_plugin_url() . 'assets/js/library/react.min.js', array(), '16.14.0', true );
+		wp_register_script( 'react', powerform_plugin_url() . 'assets/js/library/react.min.js', array(), '16.14.0', false );
 	}
 	if ( ! wp_script_is( 'react-dom', 'registered' ) ) {
-		wp_register_script( 'react-dom', powerform_plugin_url() . 'assets/js/library/react-dom.min.js', array( 'react' ), '16.14.0', true );
+		wp_register_script( 'react-dom', powerform_plugin_url() . 'assets/js/library/react-dom.min.js', array( 'react' ), '16.14.0', false );
 	}
 	wp_enqueue_script( 'react' );
 	wp_enqueue_script( 'react-dom' );
 
-	powerform_admin_enqueue_builder_layout( $version, $data, $l10n, array( 'jquery' ), false );
+	powerform_admin_enqueue_builder_layout( $version, $data, $l10n, array( 'jquery', 'react', 'react-dom' ), true );
+	
+	// Force re-localize to ensure data is available
+	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
+	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
+	
 	powerform_admin_enqueue_builder_app(
-		'powerform-admin',
+		'powerform-personality-builder',
 		powerform_plugin_url() . 'assets/js/personality-scripts.js',
 		array(
 			'jquery',
-			'wp-color-picker',
+			'underscore',
+			'backbone',
 			'react',
 			'react-dom',
 			'powerform-admin-layout',
