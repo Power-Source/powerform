@@ -155,7 +155,8 @@ function powerform_admin_enqueue_fonts( $version ) {
  * @param $version
  */
 function powerform_admin_enqueue_styles( $version ) {
-	wp_enqueue_style( 'select2-powerform-css', powerform_plugin_url() . 'assets/css/select2.min.css', array(), '4.0.3', false ); // Select2
+	wp_enqueue_style( 'choices-css', powerform_plugin_url() . 'assets/css/choices.min.css', array(), '11.0.2', false ); // Choices.js
+	wp_enqueue_style( 'choices-compat-css', powerform_plugin_url() . 'assets/css/choices-compat.css', array( 'choices-css' ), $version, false ); // Select2 compatibility
 	wp_enqueue_style( 'shared-ui', powerform_plugin_url() . 'assets/css/shared-ui.min.css', array(), $version, false );
 }
 
@@ -221,7 +222,10 @@ function powerform_sui_scripts() {
 	$sanitize_version = str_replace( '.', '-', POWERFORM_SUI_VERSION );
 	$sui_body_class   = "sui-$sanitize_version";
 
-	wp_enqueue_script( 'shared-ui', powerform_plugin_url() . 'assets/js/shared-ui.min.js', array( 'jquery' ), $sui_body_class, true );
+	// Load jQuery deprecation polyfill BEFORE shared-ui.js
+	wp_enqueue_script( 'jquery-deprecations-polyfill', powerform_plugin_url() . 'assets/js/library/jquery-deprecations-polyfill.js', array( 'jquery' ), $sui_body_class, true );
+
+	wp_enqueue_script( 'shared-ui', powerform_plugin_url() . 'assets/js/shared-ui.min.js', array( 'jquery', 'jquery-deprecations-polyfill' ), $sui_body_class, true );
 
 }
 
@@ -237,7 +241,9 @@ function powerform_sui_scripts() {
 function powerform_admin_enqueue_scripts( $version, $data = array(), $l10n = array() ) {
 	$language = get_option( 'powerform_captcha_language', 'en' );
 
-	wp_enqueue_script( 'select2-powerform', powerform_plugin_url() . 'assets/js/library/select2.full.min.js', array( 'jquery' ), $version, false );
+	// Choices.js (replaces Select2)
+	wp_enqueue_script( 'choices-js', powerform_plugin_url() . 'assets/js/library/choices.min.js', array(), '11.0.2', false );
+	wp_enqueue_script( 'choices-shim', powerform_plugin_url() . 'assets/js/library/select2-to-choices-shim.js', array( 'jquery', 'choices-js' ), $version, false );
 	wp_enqueue_script( 'ace-editor', powerform_plugin_url() . 'assets/js/library/ace/ace.js', array( 'jquery' ), $version, false );
 	wp_enqueue_script( 'google-charts', powerform_plugin_url() . 'assets/js/library/google-charts-loader.js', array( 'jquery' ), $version, false );
 
@@ -279,7 +285,9 @@ function powerform_admin_enqueue_scripts( $version, $data = array(), $l10n = arr
  * @param string $version
  */
 function powerform_admin_enqueue_builder_common_libs( $version ) {
-	wp_enqueue_script( 'select2-powerform', powerform_plugin_url() . 'assets/js/library/select2.full.min.js', array( 'jquery' ), $version, true );
+	// Choices.js (replaces Select2)
+	wp_enqueue_script( 'choices-js', powerform_plugin_url() . 'assets/js/library/choices.min.js', array(), '11.0.2', true );
+	wp_enqueue_script( 'choices-shim', powerform_plugin_url() . 'assets/js/library/select2-to-choices-shim.js', array( 'jquery', 'choices-js' ), $version, true );
 	wp_enqueue_script( 'ace-editor', powerform_plugin_url() . 'assets/js/library/ace/ace.js', array( 'jquery' ), $version, true );
 	wp_enqueue_script( 'google-charts', powerform_plugin_url() . 'assets/js/library/google-charts-loader.js', array( 'jquery' ), $version, true );
 
@@ -320,9 +328,6 @@ function powerform_admin_enqueue_builder_layout( $version, $data = array(), $l10
 	// Also use standard localize as backup
 	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
 	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
-	
-	// Debug
-	wp_add_inline_script( 'powerform-admin-layout', 'console.log("Layout loaded - powerformData keys:", powerformData ? Object.keys(powerformData).length : "undefined", "powerforml10n keys:", powerforml10n ? Object.keys(powerforml10n).length : "undefined");', 'after' );
 	
 	// Then enqueue
 	wp_enqueue_script( 'powerform-admin-layout' );
@@ -457,9 +462,6 @@ function powerform_admin_enqueue_scripts_polls( $version, $data = array(), $l10n
 		$data,
 		$l10n
 	);
-
-	// Debug: Check if React is available
-	wp_add_inline_script( 'powerform-poll-builder', 'console.log("Poll Builder Loading - React available:", typeof React !== "undefined", "ReactDOM available:", typeof ReactDOM !== "undefined", "powerformData:", typeof powerformData !== "undefined", "powerforml10n:", typeof powerforml10n !== "undefined");', 'before' );
 
 	powerform_enqueue_color_picker_alpha( $version );
 
