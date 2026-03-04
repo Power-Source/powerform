@@ -57,7 +57,7 @@
   var originalOn = $fn.on;
 
   // List of deprecated event shortcuts to intercept
-  var deprecatedEvents = ['click', 'mouseup', 'mousedown', 'mousemove', 'keyup', 'keydown', 'change', 'focus', 'blur'];
+  var deprecatedEvents = ['click', 'mouseup', 'mousedown', 'mousemove', 'mouseover', 'mouseout', 'mouseenter', 'mouseleave', 'keyup', 'keydown', 'keypress', 'change', 'focus', 'blur', 'submit', 'reset', 'select', 'dblclick', 'error', 'load', 'scroll', 'resize'];
 
   // For each deprecated event shorthand, override it to use .on()
   deprecatedEvents.forEach(function(eventName) {
