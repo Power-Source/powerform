@@ -242,8 +242,8 @@ function powerform_admin_enqueue_scripts( $version, $data = array(), $l10n = arr
 	$language = get_option( 'powerform_captcha_language', 'en' );
 
 	// Choices.js (replaces Select2)
-	wp_enqueue_script( 'choices-js', powerform_plugin_url() . 'assets/js/library/choices.min.js', array(), '11.0.2', false );
-	wp_enqueue_script( 'choices-shim', powerform_plugin_url() . 'assets/js/library/select2-to-choices-shim.js', array( 'jquery', 'choices-js' ), $version, false );
+	wp_enqueue_script( 'choices-js', powerform_plugin_url() . 'assets/js/library/choices.min.js', array(), '11.0.2', true );
+	wp_enqueue_script( 'choices-shim', powerform_plugin_url() . 'assets/js/library/select2-to-choices-shim.js', array( 'jquery', 'choices-js' ), $version, true );
 	wp_enqueue_script( 'ace-editor', powerform_plugin_url() . 'assets/js/library/ace/ace.js', array( 'jquery' ), $version, false );
 	wp_enqueue_script( 'google-charts', powerform_plugin_url() . 'assets/js/library/google-charts-loader.js', array( 'jquery' ), $version, false );
 
