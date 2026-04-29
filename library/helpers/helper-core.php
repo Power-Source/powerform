@@ -331,6 +331,20 @@ function powerform_admin_enqueue_builder_layout( $version, $data = array(), $l10
 	
 	// Then enqueue
 	wp_enqueue_script( 'powerform-admin-layout' );
+
+	// Ensure core admin bundle is present for modal routing (create/import/export).
+	if ( ! wp_script_is( 'powerform-admin', 'registered' ) ) {
+		wp_register_script(
+			'powerform-admin',
+			powerform_plugin_url() . 'build/main.js',
+			array( 'jquery', 'underscore', 'backbone', 'powerform-admin-layout' ),
+			$version,
+			true
+		);
+	}
+	wp_localize_script( 'powerform-admin', 'powerformData', $data );
+	wp_localize_script( 'powerform-admin', 'powerforml10n', $l10n );
+	wp_enqueue_script( 'powerform-admin' );
 }
 
 /**

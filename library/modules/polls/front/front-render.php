@@ -1393,7 +1393,7 @@ class Powerform_Poll_Front extends Powerform_Render_Form {
 			} elseif ( isset( $_REQUEST['results'] ) && $is_same_form && $is_same_render && $this->show_link() ) { // WPCS: CSRF OK
 				$this->track_views = false;
 				$this->render_success();
-			} elseif ( ( ! $this->is_admin || $is_preview ) && ( ! $this->model->current_user_can_vote() && ( $this->show_results() || $this->show_link() ) ) ) { // WPCS: CSRF OK
+			} elseif ( ! $is_preview && ! $this->is_admin && ! $this->model->current_user_can_vote() && ( $this->show_results() || $this->show_link() ) ) { // WPCS: CSRF OK
 				$this->track_views = false;
 				$this->render_success();
 			} else {

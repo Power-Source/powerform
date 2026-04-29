@@ -87,7 +87,35 @@ function copyToClipboard(e) {
                         }
                         return !1
                     }
-                }), e(".copy-clipboard").on("click", function(t) { t.preventDefault(), copyToClipboard(e(this).data("shortcode")), Powerform.Notification.open("success", Powerform.l10n.options.shortcode_copied, 4e3) }), e("body").on("click", ".psource-open-modal[data-modal=delete-module], .psource-open-modal[data-modal=delete-poll-submission], .psource-button-open-modal[data-modal=delete-module], .psource-button-open-modal[data-modal=delete-poll-submission], [data-modal=delete-module], [data-modal=delete-poll-submission]", function(t) { t.preventDefault(), t.stopPropagation(), t.stopImmediatePropagation(), a(e(this).closest(".psource-open-modal, .psource-button-open-modal, [data-modal]")) });
+                }), e(".copy-clipboard").on("click", function(t) { t.preventDefault(), copyToClipboard(e(this).data("shortcode")), Powerform.Notification.open("success", Powerform.l10n.options.shortcode_copied, 4e3) });
+                var s = [],
+                    l = !1,
+                    p = function(t) {
+                        if ("undefined" != typeof window.formintorjs) return void("function" == typeof t && t());
+                        if ("function" == typeof t && s.push(t), l) return;
+                        l = !0;
+                        var i = e('script[src*="/build/admin/layout.js"]').first().attr("src");
+                        if (!i) return l = !1, void(s = []);
+                        var n = i.replace("/build/admin/layout.js", "/build/main.js"),
+                            a = document.createElement("script");
+                        a.src = n, a.async = !0, a.onload = function() {
+                            l = !1;
+                            var e = s.slice();
+                            s = [], e.forEach(function(e) { "function" == typeof e && e() })
+                        }, a.onerror = function() { l = !1, s = [] }, document.body.appendChild(a)
+                    };
+                e("body").on("click", ".psource-open-modal[data-modal], .psource-button-open-modal[data-modal], [data-modal]", function(t) {
+                    var i = e(this),
+                        n = i.data("modal");
+                    if (!n || "delete-module" === n || "delete-poll-submission" === n || 0 === ("" + n).indexOf("preview_")) return;
+                    if ("undefined" == typeof window.formintorjs) return t.preventDefault(), t.stopPropagation(), void p(function() {
+                        setTimeout(function() {
+                            if (i.length && e.contains(document, i.get(0))) return void i.trigger("click");
+                            var t = e('[data-modal="' + n + '"]').filter(":visible").first();
+                            t.length && t.trigger("click")
+                        }, 0)
+                    })
+                }), e("body").on("click", ".psource-open-modal[data-modal=delete-module], .psource-open-modal[data-modal=delete-poll-submission], .psource-button-open-modal[data-modal=delete-module], .psource-button-open-modal[data-modal=delete-poll-submission], [data-modal=delete-module], [data-modal=delete-poll-submission]", function(t) { t.preventDefault(), t.stopPropagation(), t.stopImmediatePropagation(), a(e(this).closest(".psource-open-modal, .psource-button-open-modal, [data-modal]")) });
                 var r = o();
                 r && setTimeout(function() {
                     a(e("<span>").attr({ "data-modal": "delete-module", "data-form-id": r.id, "data-nonce": r.nonce, "data-modal-title": r.title, "data-modal-content": r.content }))

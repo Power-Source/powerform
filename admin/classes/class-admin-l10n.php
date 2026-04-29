@@ -19,6 +19,7 @@ class Powerform_Admin_L10n {
 		$l10n = $this->admin_l10n();
 
 		$admin_locale = require_once powerform_plugin_dir() . 'admin/locale.php';
+		$admin_locale = $this->add_source_locale_aliases( (array) $admin_locale );
 
 		$locale = array(
 			'' => array(
@@ -29,6 +30,45 @@ class Powerform_Admin_L10n {
 		$l10n['locale'] = array_merge( $locale, (array) $admin_locale );
 
 		return apply_filters( 'powerform_l10n', $l10n );
+	}
+
+	/**
+	 * Add aliases for source strings found in admin/locale.php.
+	 *
+	 * This lets the JS bundles move from English source strings to
+	 * German source strings incrementally while the generated locale file
+	 * still contains the historic English keys.
+	 *
+	 * @param array $admin_locale Locale entries keyed by historic source strings.
+	 *
+	 * @return array
+	 */
+	private function add_source_locale_aliases( array $admin_locale ) {
+		$locale_file = powerform_plugin_dir() . 'admin/locale.php';
+		$locale_text = @file_get_contents( $locale_file );
+
+		if ( false === $locale_text || '' === $locale_text ) {
+			return $admin_locale;
+		}
+
+		if ( ! preg_match_all( '/^"((?:[^"\\\\]|\\.)+)"\s*=>\s*array\(\s*null,\s*__\("((?:[^"\\\\]|\\.)*)",\s*"powerform"\s*\),/m', $locale_text, $matches, PREG_SET_ORDER ) ) {
+			return $admin_locale;
+		}
+
+		foreach ( $matches as $match ) {
+			$original_key = stripcslashes( $match[1] );
+			$source_key   = stripcslashes( $match[2] );
+
+			if ( $source_key === $original_key || '' === $source_key ) {
+				continue;
+			}
+
+			if ( isset( $admin_locale[ $original_key ] ) && ! isset( $admin_locale[ $source_key ] ) ) {
+				$admin_locale[ $source_key ] = $admin_locale[ $original_key ];
+			}
+		}
+
+		return $admin_locale;
 	}
 
 	/**
