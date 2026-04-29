@@ -2,11 +2,12 @@
 Plugin Name: Powerform - Kontaktformular, Zahlungsformular & Custom Form Builder
 Version: 1.0.1
 Author: PSOURCE
-Author URI: https://github.com/Power-Source
-Contributors: PSOURCE, WebFactory
+Author URI: https://psource.eimen.net
+Contributors: PSOURCE
 Tags: classicpress, formulare, kontaktformular, formular plugin, zahlungsformular, custom form, form builder, paypal formular, formular erstellen, quiz, quiz builder, bestellformular, stripe zahlungen, paypal zahlungen, umfrage, poll
 Requires at least: 4.9
 Tested up to: 6.8.1
+ClassicPress: 2.7.0
 Stable tag: 1.0.1
 Requires PHP: 5.2.4
 Requires CP: 2.6.0
@@ -172,32 +173,20 @@ Ja! Mit dem eingebauten Import-Wizard kannst du alle CF7-Formulare mit wenigen K
 
 == Changelog ==
 
-= 1.0.1 =
-* 🔧 Enqueue-Layer refactored: Shared Helper-Funktionen für alle Builder-Screens
-* ✅ jQuery UI Deprecation-Fix: Eigener CDN-Handle statt deprecated ClassicPress core-handles
-* 🐛 Lokalisierung korrigiert: Doppelte wp_localize_script() Calls entfernt
-* ⚡ Dependency-Chain optimiert: powerform-admin-layout als explizite Dependency
-* 🧹 Duplicate script enqueues aus wizard-page entfernt (moment.js, daterangepicker)
-* 🚀 Form Builder zeigt wieder korrekt nach jQuery UI Migration
-
-= 1.0.0 =
-* 🎉 Erste öffentliche Version
-* 🏆 Speziell für ClassicPress 2.6.0+ entwickelt
-* ✅ Vollständige ClassicPress-Optimierung
-* 🔄 WordPress 6.8.1 Kompatibilität (als Bonus)
-* 🇩🇪 Deutsche Lokalisierung
-* ⚡ Drag & Drop Form Builder
-* 💳 Stripe & PayPal Integration
-* 📊 Polls & Quizze
-* 🔐 Google reCAPTCHA
-* 📥 Contact Form 7 Import
-* 🎨 Classic Editor & Gutenberg Support
-
-
-== Upgrade Notice ==
+= 1.0.2 =
+* Dropdown-Menü-Aktionen im Admin repariert: Einzelaktionen wie Löschen reagieren wieder korrekt
+* Delete-Flow im Admin stabilisiert: Bestätigungsdialog für Formular, Umfrage und Quiz zuverlässig geöffnet
+* Löschvorgänge serverseitig korrigiert: Module werden endgültig entfernt statt nur im Papierkorb zu landen
+* Editor-Rücksprung mit Delete-Parameter abgefangen, damit Löschdialoge nach Redirect weiter funktionieren
+* Admin-Layout gegen Timing-Probleme gehärtet: Fallbacks ohne frühen Powerform-ReferenceError
 
 = 1.0.1 =
-Wichtiges Update: Behebt jQuery UI Deprecation-Warnung in ClassicPress 2.2.0+ und korrigiert Builder-Ladeprobleme. Empfohlenes Update für alle Nutzer! ✅
+* Enqueue-Layer refactored: Shared Helper-Funktionen für alle Builder-Screens
+* jQuery UI Deprecation-Fix: Eigener CDN-Handle statt deprecated ClassicPress core-handles
+* Lokalisierung korrigiert: Doppelte wp_localize_script() Calls entfernt
+* Dependency-Chain optimiert: powerform-admin-layout als explizite Dependency
+* Duplicate script enqueues aus wizard-page entfernt (moment.js, daterangepicker)
+* Form Builder zeigt wieder korrekt nach jQuery UI Migration
 
 = 1.0.0 =
-Willkommen bei Powerform - DEM Formular-Plugin für ClassicPress! Diese erste Version bringt dir alle Features, die du für professionelle Formulare auf deiner ClassicPress-Seite brauchst. 🚀
+* Erste öffentliche Version

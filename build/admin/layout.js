@@ -5,7 +5,7 @@ function copyToClipboard(e) {
     "use strict";
     ! function() {
         e(document).ready(function() {
-            if ("object" == typeof window.Powerform && "object" == typeof window.Powerform.Utils && Powerform.Utils.sui_delegate_events(), e(".powerform-toggle-entries-filter").click(function(t) { return e(this).toggleClass("sui-active"), e(this).closest(".sui-box-body").find(".sui-pagination-filter").toggleClass("sui-open"), !1 }), void 0 !== e.fn.daterangepicker) {
+            if ("object" == typeof window.Powerform && "object" == typeof window.Powerform.Utils && Powerform.Utils.sui_delegate_events(), e("body").on("mouseup", ".sui-dropdown ul, .sui-dropdown ul *", function(e) { e.stopPropagation() }), e(".powerform-toggle-entries-filter").click(function(t) { return e(this).toggleClass("sui-active"), e(this).closest(".sui-box-body").find(".sui-pagination-filter").toggleClass("sui-open"), !1 }), void 0 !== e.fn.daterangepicker) {
                 var t = {};
                 void 0 !== window.powerform_entries_datepicker_ranges && (t = window.powerform_entries_datepicker_ranges), e("input.powerform-entries-filter-date").daterangepicker({ autoUpdateInput: !1, autoApply: !0, alwaysShowCalendars: !0, ranges: t, locale: powerforml10n.daterangepicker }), e("input.powerform-entries-filter-date").on("apply.daterangepicker", function(t, i) { e(this).val(i.startDate.format("MM/DD/YYYY") + " - " + i.endDate.format("MM/DD/YYYY")) })
             }
@@ -50,6 +50,32 @@ function copyToClipboard(e) {
                     o = a;
                 n.each(function() { e(this).find(".psource-body-menu").css("z-index", o), o-- })
             }), e(document).ready(function() {
+                var n = function(t) {
+                        var i = e("<form>", { method: "post", action: window.location.href });
+                        return e("<input>", { type: "hidden", name: "powerform_action", value: "delete" }).appendTo(i), e("<input>", { type: "hidden", name: "id", value: t.data("form-id") || "" }).appendTo(i), e("<input>", { type: "hidden", name: "powerformNonce", value: t.data("nonce") || "" }).appendTo(i), e("<input>", { type: "hidden", name: "powerformEntryNonce", value: t.data("nonce") || "" }).appendTo(i), e("<input>", { type: "hidden", name: "_wp_http_referer", value: window.location.pathname + window.location.search }).appendTo(i), e("body").append(i), i.trigger("submit")
+                    },
+                    o = function() {
+                        var t = new URLSearchParams(window.location.search || ""),
+                            i = t.get("delete"),
+                            n = t.get("module_id"),
+                            a = t.get("nonce"),
+                            o = t.get("module_type"),
+                            r = powerforml10n && powerforml10n.popup ? powerforml10n.popup.delete_form : "Formular löschen",
+                            s = powerforml10n && powerforml10n.popup ? powerforml10n.popup.are_you_sure_form : "Möchtest Du dieses Formular wirklich dauerhaft löschen?";
+                        return i && n && a ? ("poll" === o && (r = powerforml10n && powerforml10n.popup ? powerforml10n.popup.delete_poll : "Umfrage löschen", s = powerforml10n && powerforml10n.popup ? powerforml10n.popup.are_you_sure_poll : "Möchtest Du diese Umfrage wirklich dauerhaft löschen?"), "quiz" === o && (r = powerforml10n && powerforml10n.popup ? powerforml10n.popup.delete_quiz : "Quiz löschen", s = powerforml10n && powerforml10n.popup ? powerforml10n.popup.are_you_sure_quiz : "Möchtest Du dieses Quiz wirklich dauerhaft löschen?"), { id: n, nonce: a, moduleType: o, title: r, content: s }) : !1
+                    },
+                    a = function(t) {
+                        var i = window.Powerform || {},
+                            a = i.l10n && i.l10n.popup ? i.l10n.popup : powerforml10n && powerforml10n.popup ? powerforml10n.popup : {},
+                            o = t.data("modal") || "delete-module",
+                            r = t.data("modal-title") || a.delete_form || "Löschen",
+                            s = t.data("modal-content") || a.cannot_be_reverted || "Dieser Vorgang kann nicht rückgängig gemacht werden.",
+                            l = t.data("nonce") || "",
+                            p = t.data("form-id") || "",
+                            d = window.location.pathname + window.location.search,
+                            u = 'delete-poll-submission' === o ? '<div class="sui-box-body"><span class="sui-description">' + s + '</span></div><div class="sui-box-footer"><button type="button" class="sui-button sui-button-ghost powerform-popup-cancel" data-a11y-dialog-hide>' + (a.cancel || "Abbrechen") + '</button><button type="submit" class="delete-poll-submission sui-button sui-button-ghost sui-button-red popup-confirmation-confirm" data-nonce="' + l + '" data-id="' + p + '" data-action="delete_poll_submissions">' + (a.delete || "Löschen") + '</button></div>' : '<div class="sui-box-body"><span class="sui-description">' + s + '</span></div><div class="sui-box-footer"><button type="button" class="sui-button sui-button-ghost powerform-popup-cancel" data-a11y-dialog-hide>' + (a.cancel || "Abbrechen") + '</button><form method="post" class="delete-action"><input type="hidden" name="powerform_action" value="delete"><input type="hidden" name="id" value="' + p + '"><input type="hidden" name="powerformNonce" value="' + l + '"><input type="hidden" name="powerformEntryNonce" value="' + l + '"><input type="hidden" name="_wp_http_referer" value="' + d + '"><button type="submit" class="sui-button sui-button-ghost sui-button-red popup-confirmation-confirm"><i class="sui-icon-trash" aria-hidden="true"></i>' + (a.delete || "Löschen") + '</button></form></div>';
+                        return i.Popup && "function" == typeof i.Popup.open ? i.Popup.open(function() { e(this).append(u) }, { title: r, has_custom_box: !0 }) : void(window.confirm(s) && n(t))
+                    };
                 e("body").on("change", ".sui-insert-variables select", function(t) {
                     var i = e(t.target),
                         n = i.data("textarea-id");
@@ -61,7 +87,11 @@ function copyToClipboard(e) {
                         }
                         return !1
                     }
-                }), e(".copy-clipboard").on("click", function(t) { t.preventDefault(), copyToClipboard(e(this).data("shortcode")), Powerform.Notification.open("success", Powerform.l10n.options.shortcode_copied, 4e3) }), e("body").on("click", ".delete-poll-submission", function(t) {
+                }), e(".copy-clipboard").on("click", function(t) { t.preventDefault(), copyToClipboard(e(this).data("shortcode")), Powerform.Notification.open("success", Powerform.l10n.options.shortcode_copied, 4e3) }), e("body").on("click", ".psource-open-modal[data-modal=delete-module], .psource-open-modal[data-modal=delete-poll-submission], .psource-button-open-modal[data-modal=delete-module], .psource-button-open-modal[data-modal=delete-poll-submission], [data-modal=delete-module], [data-modal=delete-poll-submission]", function(t) { t.preventDefault(), t.stopPropagation(), t.stopImmediatePropagation(), a(e(this).closest(".psource-open-modal, .psource-button-open-modal, [data-modal]")) });
+                var r = o();
+                r && setTimeout(function() {
+                    a(e("<span>").attr({ "data-modal": "delete-module", "data-form-id": r.id, "data-nonce": r.nonce, "data-modal-title": r.title, "data-modal-content": r.content }))
+                }, 100), e("body").on("click", ".delete-poll-submission", function(t) {
                     var i = e(t.target),
                         n = { action: "powerform_delete_poll_submissions", id: i.data("id"), _ajax_nonce: i.data("nonce") };
                     i.addClass("sui-button-onload"), e.post({ url: Powerform.Data.ajaxUrl, type: "post", data: n }).done(function(e) { e.success && jQuery(".sui-poll-submission").addClass("sui-message").html("").html(e.data.html), Powerform.Popup.close(), _.isUndefined(e.data.notification) || _.isUndefined(e.data.notification.type) || _.isUndefined(e.data.notification.text) || _.isUndefined(e.data.notification.duration) || Powerform.Notification.open(e.data.notification.type, e.data.notification.text, e.data.notification.duration).done(function() {}) })

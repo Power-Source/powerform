@@ -1147,8 +1147,8 @@ formintorjs.define("text!tpl/dashboard.html", [], function() {
     function(t) {
         formintorjs.define("admin/popups", ["admin/popup/templates", "admin/popup/login", "admin/popup/quizzes", "admin/popup/schedule", "admin/popup/new-form", "admin/popup/polls", "admin/popup/ajax", "admin/popup/delete", "admin/popup/preview", "admin/popup/reset-plugin-settings", "admin/popup/disconnect-stripe", "admin/popup/disconnect-paypal", "admin/popup/approve-user", "admin/popup/delete-unconfirmed-user"], function(e, i, n, o, r, a, s, l, p, d, u, c, m, f) {
             var h = Backbone.View.extend({
-                el: "main.sui-wrap",
-                events: { "click .psource-open-modal": "open_modal", "click .psource-button-open-modal": "open_modal" },
+                el: "body",
+                events: { "click .psource-open-modal": "open_modal", "click .psource-button-open-modal": "open_modal", "click [data-modal]": "open_modal" },
                 initialize: function() {
                     var t = Powerform.Utils.get_url_param("new"),
                         e = Powerform.Utils.get_url_param("title");
@@ -1181,7 +1181,7 @@ formintorjs.define("text!tpl/dashboard.html", [], function() {
                     e.preventDefault();
                     var i = t(e.target);
                     t(e.target).closest(".psource-split--item");
-                    i.hasClass("psource-open-modal") || i.hasClass("psource-button-open-modal") || (i = i.closest(".psource-open-modal"));
+                    i.hasClass("psource-open-modal") || i.hasClass("psource-button-open-modal") || i.is("[data-modal]") || (i = i.closest(".psource-open-modal, .psource-button-open-modal, [data-modal]"));
                     var n = i.data("modal"),
                         o = i.data("nonce"),
                         r = i.data("form-id"),

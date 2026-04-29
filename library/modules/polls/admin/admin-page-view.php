@@ -361,7 +361,7 @@ class Powerform_Poll_Page extends Powerform_Admin_Page {
 			$form_view = Powerform_Form_Views_Model::get_instance();
 			$form_view->delete_by_form( $id );
 			powerform_update_poll_ip_address_retention( $id, null, null );
-			wp_delete_post( $id );
+			wp_delete_post( $id, true );
 
 			/**
 			 * Action called after quiz deleted

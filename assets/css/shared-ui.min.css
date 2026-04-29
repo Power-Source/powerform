@@ -1,5 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700);
-@import url(https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css);
+@import url(../css/select2.min.css);
 .sui-2-6-0 .sui-wrap .fui-demo--poll.fui-demo--bold label input,
 .sui-2-6-0 .sui-wrap .fui-demo--poll.fui-demo--default label input,
 .sui-2-6-0 .sui-wrap .fui-demo--poll.fui-demo--flat label input,

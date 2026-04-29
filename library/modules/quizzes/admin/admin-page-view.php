@@ -435,14 +435,14 @@ class Powerform_Quizz_Page extends Powerform_Admin_Page {
 				$leads_model = Powerform_Custom_Form_Model::model()->load( $leads_id );
 
 				if ( is_object( $leads_model ) ) {
-					wp_delete_post( $leads_id );
+					wp_delete_post( $leads_id, true );
 				}
 			}
 
 			Powerform_Form_Entry_Model::delete_by_form( $id );
 			$form_view = Powerform_Form_Views_Model::get_instance();
 			$form_view->delete_by_form( $id );
-			wp_delete_post( $id );
+			wp_delete_post( $id, true );
 
 			/**
 			 * Action called after quiz deleted

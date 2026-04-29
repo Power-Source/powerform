@@ -5,12 +5,12 @@
  * Plugin URI:  https://power-source.github.io/powerform/
  * Description: Erfasse Benutzerinformationen (so detailliert wie Du möchtest), beteilige Benutzer an interaktiven Umfragen, die Echtzeitergebnisse und Grafiken, Quizfragen im Facebook-Stil und Wissenstests ohne falsche Antwort anzeigen.
  * Author: PSOURCE
- * Author URI: https://github.com/Power-Source
+ * Author URI: https://psource.eimen.net
  * Text Domain: powerform
  * Domain Path: /languages/
  */
 /*
-Copyright 2009-2026 PSOURCE (https://github.com/Power-Source)
+Copyright 2009-2026 PSOURCE (https://psource.eimen.net)
 Author – DerN3rd 
 
 This program is free software; you can redistribute it and/or modify

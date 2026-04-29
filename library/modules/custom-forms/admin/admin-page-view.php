@@ -378,7 +378,7 @@ class Powerform_CForm_Page extends Powerform_Admin_Page {
 			$form_view = Powerform_Form_Views_Model::get_instance();
 			$form_view->delete_by_form( $id );
 			powerform_update_form_submissions_retention( $id, null, null );
-			wp_delete_post( $id );
+			wp_delete_post( $id, true );
 
 			// Purge count forms cache
 			wp_cache_delete( 'powerform_form_total_entries', 'powerform_form_total_entries' );
