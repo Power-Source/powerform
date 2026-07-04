@@ -225,7 +225,12 @@ function powerform_sui_scripts() {
 	// Load jQuery deprecation polyfill BEFORE shared-ui.js
 	wp_enqueue_script( 'jquery-deprecations-polyfill', powerform_plugin_url() . 'assets/js/library/jquery-deprecations-polyfill.js', array( 'jquery' ), $sui_body_class, true );
 
-	wp_enqueue_script( 'shared-ui', powerform_plugin_url() . 'assets/js/shared-ui.min.js', array( 'jquery', 'jquery-deprecations-polyfill' ), $sui_body_class, true );
+	// shared-ui initializes WP pointers via jQuery.fn.pointer on some admin screens.
+	// Ensure the core pointer assets are available before shared-ui executes.
+	wp_enqueue_style( 'wp-pointer' );
+	wp_enqueue_script( 'wp-pointer' );
+
+	wp_enqueue_script( 'shared-ui', powerform_plugin_url() . 'assets/js/shared-ui.min.js', array( 'jquery', 'jquery-deprecations-polyfill', 'wp-pointer' ), $sui_body_class, true );
 
 }
 
