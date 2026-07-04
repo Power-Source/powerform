@@ -6,7 +6,7 @@ Tags: classicpress, formulare, kontaktformular, formular plugin, zahlungsformula
 Requires at least: 4.9
 Tested up to: 6.8.1
 ClassicPress: 2.7.0
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 Requires PHP: 7.4.0
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -169,6 +169,11 @@ Ja! Mit dem eingebauten Import-Wizard kannst du alle CF7-Formulare mit wenigen K
 
 
 == Changelog ==
+
+= 1.0.2 =
+* Admin-Fehler behoben: `$(...).pointer is not a function` durch fehlende WP-Pointer-Abhängigkeit im Wizard/Builder behoben
+* Formulareditor stabilisiert: Beim Klick auf Element-Aktionen (Bearbeiten/Löschen/Dropdown) wird kein unbeabsichtigtes Dragging des Elternelements mehr ausgelöst
+* Drag-&-Drop-Verhalten verbessert: Interaktive Controls vom Drag-Start ausgeschlossen und Drag-Schwelle erhöht, um versehentliche Verschiebungen/Versätze zu vermeiden
 
 = 1.0.1 =
 * Dropdown-Menü-Aktionen im Admin repariert: Einzelaktionen wie Löschen reagieren wieder korrekt

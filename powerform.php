@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: PS Powerform
- * Version: 1.0.1
- * Plugin URI:  https://power-source.github.io/powerform/
+ * Version: 1.0.2
+ * Plugin URI:  https://psource.eimen.net/wiki/ps-powerform-dokumentation/
  * Description: Erfasse Benutzerinformationen (so detailliert wie Du möchtest), beteilige Benutzer an interaktiven Umfragen, die Echtzeitergebnisse und Grafiken, Quizfragen im Facebook-Stil und Wissenstests ohne falsche Antwort anzeigen.
  * Author: PSOURCE
  * Author URI: https://psource.eimen.net
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'POWERFORM_VERSION' ) ) {
-	define( 'POWERFORM_VERSION', '1.0.1' );
+	define( 'POWERFORM_VERSION', '1.0.2' );
 }
 
 if ( ! defined( 'POWERFORM_SUI_VERSION' ) ) {
