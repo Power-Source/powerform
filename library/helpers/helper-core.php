@@ -225,12 +225,27 @@ function powerform_sui_scripts() {
 	// Load jQuery deprecation polyfill BEFORE shared-ui.js
 	wp_enqueue_script( 'jquery-deprecations-polyfill', powerform_plugin_url() . 'assets/js/library/jquery-deprecations-polyfill.js', array( 'jquery' ), $sui_body_class, true );
 
-	// shared-ui initializes WP pointers via jQuery.fn.pointer on some admin screens.
-	// Ensure the core pointer assets are available before shared-ui executes.
-	wp_enqueue_style( 'wp-pointer' );
-	wp_enqueue_script( 'wp-pointer' );
+	// Runtime safety shims for ClassicPress/older admin stacks where pointer/SUI helpers may be missing.
+	$runtime_shim = <<<'JS'
+(function(w,$){if(!$){return;}if(typeof $.fn.pointer!=='function'){$.fn.pointer=function(){return this;};}if(typeof $.fn.SUIselect2!=='function'){$.fn.SUIselect2=function(){return this;};}if(typeof w.SUI!=='object'||!w.SUI){w.SUI={};}var methods=['suiAccordion','suiTabs','suiSelect','loadCircleScore','showHidePassword'];for(var i=0;i<methods.length;i++){if(typeof w.SUI[methods[i]]!=='function'){w.SUI[methods[i]]=function(){return true;};}}})(window,window.jQuery);
+JS;
+	wp_add_inline_script(
+		'jquery-deprecations-polyfill',
+		$runtime_shim,
+		'after'
+	);
 
-	wp_enqueue_script( 'shared-ui', powerform_plugin_url() . 'assets/js/shared-ui.min.js', array( 'jquery', 'jquery-deprecations-polyfill', 'wp-pointer' ), $sui_body_class, true );
+	$shared_ui_deps = array( 'jquery', 'jquery-deprecations-polyfill' );
+
+	// Load WP pointer assets when available, but never block shared-ui on environments
+	// where wp-pointer is not registered (some ClassicPress setups).
+	if ( wp_script_is( 'wp-pointer', 'registered' ) ) {
+		wp_enqueue_style( 'wp-pointer' );
+		wp_enqueue_script( 'wp-pointer' );
+		$shared_ui_deps[] = 'wp-pointer';
+	}
+
+	wp_enqueue_script( 'shared-ui', powerform_plugin_url() . 'assets/js/shared-ui.min.js', $shared_ui_deps, $sui_body_class, true );
 
 }
 
