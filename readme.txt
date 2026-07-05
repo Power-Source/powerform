@@ -157,17 +157,6 @@ Perfekt! Powerform funktioniert hervorragend mit dem Classic Editor von ClassicP
 = Kann ich bestehende Contact Form 7 Formulare importieren? =
 Ja! Mit dem eingebauten Import-Wizard kannst du alle CF7-Formulare mit wenigen Klicks migrieren. 📥
 
-
-== Screenshots ==
-
-1. **Drag & Drop Builder** - Intuitiver Formular-Editor
-2. **Form Templates** - Vorgefertigte Vorlagen für jeden Zweck
-3. **Live Polls** - Echtzeit-Umfrageergebnisse
-4. **Quiz Builder** - Erstelle ansprechende Quizze
-5. **Payment Forms** - Akzeptiere Zahlungen mit Stripe & PayPal
-6. **Form Analytics** - Detaillierte Statistiken & Berichte
-
-
 == Changelog ==
 
 = 1.0.3 =
