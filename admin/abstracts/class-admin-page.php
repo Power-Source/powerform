@@ -633,8 +633,13 @@ abstract class Powerform_Admin_Page {
 	 */
 	public function get_box_summary_image_style() {
 		$image_url = $this->get_box_summary_image_url();
+
+		if ( empty( $image_url ) ) {
+			$image_url = powerform_plugin_url() . 'Logo.png';
+		}
+
 		if ( ! empty( $image_url ) ) {
-			return 'background-image:url(' . esc_url( $image_url ) . ')';
+			return 'background-image:url(' . esc_url( $image_url ) . ');background-repeat:no-repeat;background-position:center center;background-size:82% auto';
 		}
 
 		return '';

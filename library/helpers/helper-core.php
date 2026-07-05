@@ -227,7 +227,7 @@ function powerform_sui_scripts() {
 
 	// Runtime safety shims for ClassicPress/older admin stacks where pointer/SUI helpers may be missing.
 	$runtime_shim = <<<'JS'
-(function(w,$){if(!$){return;}if(typeof $.fn.pointer!=='function'){$.fn.pointer=function(){return this;};}if(typeof $.fn.SUIselect2!=='function'){$.fn.SUIselect2=function(){return this;};}if(typeof w.SUI!=='object'||!w.SUI){w.SUI={};}var methods=['suiAccordion','suiTabs','suiSelect','loadCircleScore','showHidePassword'];for(var i=0;i<methods.length;i++){if(typeof w.SUI[methods[i]]!=='function'){w.SUI[methods[i]]=function(){return true;};}}})(window,window.jQuery);
+(function(w,$){if(!$){return;}if(typeof $.fn.pointer!=='function'){$.fn.pointer=function(){return this;};}if(typeof $.fn.SUIselect2!=='function'){$.fn.SUIselect2=function(){return this;};}})(window,window.jQuery);
 JS;
 	wp_add_inline_script(
 		'jquery-deprecations-polyfill',
@@ -278,6 +278,64 @@ function powerform_admin_enqueue_scripts( $version, $data = array(), $l10n = arr
 	wp_enqueue_script( 'powerform-admin-layout', powerform_plugin_url() . 'build/admin/layout.js', array( 'jquery' ), $version, true );
 	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
 	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
+
+	// Fallback for admin lists/dashboard when shared-ui dropdown/accordion methods are not available.
+	$admin_ui_fallback = <<<'JS'
+(function(w,$){
+	if(!$){return;}
+	if(w.__powerformAdminUiFallbackBound){return;}
+	w.__powerformAdminUiFallbackBound = true;
+
+	function closeDropdowns(except){
+		var drops = $('#powerform-modules-list .sui-dropdown.open');
+		if(except){
+			drops = drops.not(except);
+		}
+		drops.removeClass('open');
+	}
+
+	$('body').on('click.powerformUiFallback', '#powerform-modules-list .sui-dropdown-anchor', function(e){
+		var dropdown = $(this).closest('.sui-dropdown');
+		if(!dropdown.length){
+			return;
+		}
+		closeDropdowns(dropdown);
+		dropdown.toggleClass('open');
+		e.preventDefault();
+		e.stopPropagation();
+		e.stopImmediatePropagation();
+	});
+
+	$(document).on('click.powerformUiFallback', function(e){
+		if($(e.target).closest('#powerform-modules-list .sui-dropdown').length){
+			return;
+		}
+		closeDropdowns();
+	});
+
+	$('body').on('click.powerformUiFallback', '#powerform-modules-list .sui-accordion-item-header, #powerform-modules-list tr.sui-accordion-item', function(e){
+		if($(e.target).closest('.sui-accordion-item-action').length){
+			return;
+		}
+
+		var item = $(this).closest('.sui-accordion-item');
+		if(!item.length){
+			return;
+		}
+
+		item.toggleClass('sui-accordion-item--open');
+
+		if($(this).is('tr.sui-accordion-item')){
+			var contentRows = item.nextUntil('.sui-accordion-item').filter('.sui-accordion-item-content');
+			contentRows.toggleClass('sui-accordion-item--open', item.hasClass('sui-accordion-item--open'));
+		}
+
+		e.preventDefault();
+		e.stopImmediatePropagation();
+	});
+})(window, window.jQuery);
+JS;
+	wp_add_inline_script( 'powerform-admin-layout', $admin_ui_fallback, 'after' );
 	
 	wp_register_script(
 		'powerform-admin',

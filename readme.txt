@@ -170,6 +170,13 @@ Ja! Mit dem eingebauten Import-Wizard kannst du alle CF7-Formulare mit wenigen K
 
 == Changelog ==
 
+= 1.0.3 =
+* Dashboard-Interaktionen repariert: Zahnrad-Menüs in den Modul-Listen reagieren wieder zuverlässig
+* Accordion/Minimierung im Admin stabilisiert: Auf- und Zuklappen der Listeneinträge funktioniert wieder korrekt
+* Builder-Crash behoben: `ReferenceError: SUI is not defined` in `form-scripts.js` durch defensive Guards bei SUI-Aufrufen abgefangen
+* Shared-UI-Runtime abgesichert: Keine blockierenden Dummy-Overrides für zentrale SUI-Methoden mehr
+* Admin-UI-Fallback ergänzt: Dropdown/Accordion-Handling für `#powerform-modules-list` greift nun robust, wenn Shared-UI nicht initialisiert ist
+
 = 1.0.2 =
 * Admin-Fehler behoben: `$(...).pointer is not a function` durch fehlende WP-Pointer-Abhängigkeit im Wizard/Builder behoben
 * Formulareditor stabilisiert: Beim Klick auf Element-Aktionen (Bearbeiten/Löschen/Dropdown) wird kein unbeabsichtigtes Dragging des Elternelements mehr ausgelöst
