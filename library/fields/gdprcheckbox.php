@@ -54,7 +54,7 @@ class Powerform_GdprCheckbox extends Powerform_Field {
 	public function __construct() {
 		parent::__construct();
 
-		$this->name = __( 'GDPR Approval', Powerform::DOMAIN );
+		$this->name = __( 'DSGVO-Zustimmung', Powerform::DOMAIN );
 	}
 
 	/**
@@ -70,9 +70,9 @@ class Powerform_GdprCheckbox extends Powerform_Field {
 
 		return array(
 			'required'         => 'true',
-			'field_label'      => 'GDPR',
-			'gdpr_description' => sprintf( __( 'Yes, I agree with the <a href="%s" target="_blank">privacy policy</a> and <a href="#" target="_blank">terms and conditions</a>.', Powerform::DOMAIN ), esc_url( $privacy_url ) ),
-			'required_message' => __( 'This field is required. Please check it.', Powerform::DOMAIN ),
+			'field_label'      => 'DSGVO',
+			'gdpr_description' => sprintf( __( 'Ja, ich stimme der <a href="%s" target="_blank">Datenschutzerklärung</a> und den <a href="#" target="_blank">Allgemeinen Geschäftsbedingungen</a> zu.', Powerform::DOMAIN ), esc_url( $privacy_url ) ),
+			'required_message' => __( 'Dieses Feld ist erforderlich. Bitte aktiviere es.', Powerform::DOMAIN ),
 		);
 	}
 
@@ -171,7 +171,7 @@ class Powerform_GdprCheckbox extends Powerform_Field {
 		$required_message = self::get_property( 'required_message', $field, '' );
 		$required_message = apply_filters(
 			'powerform_gdprcheckbox_field_required_validation_message',
-			( ! empty( $required_message ) ? $required_message : __( 'This field is required. Please check it.', Powerform::DOMAIN ) ),
+			( ! empty( $required_message ) ? $required_message : __( 'Dieses Feld ist erforderlich. Bitte überprüfe es.', Powerform::DOMAIN ) ),
 			$id,
 			$field
 		);
@@ -195,7 +195,7 @@ class Powerform_GdprCheckbox extends Powerform_Field {
 		if ( empty( $data ) || 'true' !== $data ) {
 			$this->validation_message[ $id ] = apply_filters(
 				'powerform_gdprcheckbox_field_required_validation_message',
-				__( 'This field is required. Please check it.', Powerform::DOMAIN ),
+				__( 'Dieses Feld ist erforderlich. Bitte aktiviere es.', Powerform::DOMAIN ),
 				$id,
 				$field
 			);

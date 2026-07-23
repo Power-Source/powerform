@@ -46,7 +46,7 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 	 */
 	public function __construct( Powerform_Addon_Abstract $addon, $form_id ) {
 		parent::__construct( $addon, $form_id );
-		$this->_submit_form_error_message = __( 'Mailchimp failed to process submitted data. Please check your form and try again', Powerform::DOMAIN );
+		$this->_submit_form_error_message = __( 'Mailchimp konnte die übermittelten Daten nicht verarbeiten. Bitte überprüfe das Formular und versuche es erneut.', Powerform::DOMAIN );
 	}
 
 	/**
@@ -96,7 +96,7 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 		$input_name = 'powerform-addon-mailchimp-gdpr';
 		$input_id   = $input_name . '-' . $uniq_id;
 		$html       = '<div class="powerform-row"><div id="field-' . $input_id . '" class="powerform-col powerform-col-12"><div class="powerform-field">';
-		$html      .= '<div class="powerform-field--label"><label class="powerform-label" id="powerform-label-' . $input_id . '">' . esc_html_e( 'Mailchimp GDPR', Powerform::DOMAIN )
+		$html      .= '<div class="powerform-field--label"><label class="powerform-label" id="powerform-label-' . $input_id . '">' . esc_html_e( 'Mailchimp DSGVO', Powerform::DOMAIN )
 					. '</label></div>';
 		// matching checkbox with design
 		$form_settings = $this->form_settings_instance->get_form_settings();
@@ -336,7 +336,7 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 							//GDPR not checked, add error
 							throw new Powerform_Addon_Mailchimp_Exception(
 								__(
-									'Powerform Addon Mailchimp was not sending subscriber to mailchimp as GDPR field is not checked on input',
+									'Das Powerform-Add-on für Mailchimp hat keine Abonnenten an Mailchimp übertragen, da das DSGVO-Feld bei der Eingabe nicht angehakt war.',
 									Powerform::DOMAIN
 								)
 							);
@@ -349,13 +349,13 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 			// EMAIL : super required**
 			if ( ! isset( $addon_setting_values['fields_map']['EMAIL'] ) ) {
 				throw new Powerform_Addon_Mailchimp_Exception(/* translators: ... */
-					sprintf( __( 'Required Field %1$s not mapped yet to Powerform Form Field, Please check your Mailchimp Configuration on Form Settings', Powerform::DOMAIN ), 'EMAIL' )
+					sprintf( __( 'Das Pflichtfeld %1$s ist noch keinem Powerform-Formularfeld zugeordnet. Bitte überprüfe die Mailchimp-Konfiguration in den Formulareinstellungen.', Powerform::DOMAIN ), 'EMAIL' )
 				);
 			}
 
 			if ( ! isset( $submitted_data[ $addon_setting_values['fields_map']['EMAIL'] ] ) || empty( $submitted_data[ $addon_setting_values['fields_map']['EMAIL'] ] ) ) {
 				throw new Powerform_Addon_Mailchimp_Exception(/* translators: ... */
-					sprintf( __( 'Required Field %1$s is not filled by user', Powerform::DOMAIN ), 'EMAIL' )
+					sprintf( __( 'Das Pflichtfeld %1$s wurde vom Benutzer nicht ausgefüllt.', Powerform::DOMAIN ), 'EMAIL' )
 				);
 			}
 
@@ -382,14 +382,14 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 					foreach ( $address_fields as $addr => $address ) {
 						if ( ! isset( $addon_setting_values['fields_map'][ $mailchimp_required_field->tag ][ $addr ] ) ) {
 							throw new Powerform_Addon_Mailchimp_Exception(/* translators: ... */
-								sprintf( __( 'Required Field %1$s not mapped yet to Powerform Form Field, Please check your Mailchimp Configuration on Form Settings', Powerform::DOMAIN ), $mailchimp_required_field->name )
+								sprintf( __( 'Das Pflichtfeld %1$s ist noch keinem Powerform-Formularfeld zugeordnet. Bitte überprüfe die Mailchimp-Konfiguration in den Formulareinstellungen.', Powerform::DOMAIN ), $mailchimp_required_field->name )
 							);
 						}
 
 						if ( ! isset( $submitted_data[ $addon_setting_values['fields_map'][ $mailchimp_required_field->tag ][ $addr ] ] )
 							|| empty( $submitted_data[ $addon_setting_values['fields_map'][ $mailchimp_required_field->tag ][ $addr ] ] ) ) {
 							throw new Powerform_Addon_Mailchimp_Exception(/* translators: ... */
-								sprintf( __( 'Required Field %1$s not filled by user', Powerform::DOMAIN ), $mailchimp_required_field->name )
+								sprintf( __( 'Das Pflichtfeld %1$s wurde vom Benutzer nicht ausgefüllt.', Powerform::DOMAIN ), $mailchimp_required_field->name )
 							);
 						}
 					}
@@ -397,7 +397,7 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 
 					if ( ! isset( $addon_setting_values['fields_map'][ $mailchimp_required_field->tag ] ) ) {
 						throw new Powerform_Addon_Mailchimp_Exception(/* translators: ... */
-							sprintf( __( 'Required Field %1$s not mapped yet to Powerform Form Field, Please check your Mailchimp Configuration on Form Settings', Powerform::DOMAIN ), $mailchimp_required_field->name )
+							sprintf( __( 'Das Pflichtfeld %1$s ist noch keinem Powerform-Formularfeld zugeordnet. Bitte überprüfe die Mailchimp-Konfiguration in den Formulareinstellungen.', Powerform::DOMAIN ), $mailchimp_required_field->name )
 						);
 					}
 
@@ -408,7 +408,7 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 
 					if ( ! $is_calculation && ! $is_stripe && ! $has_submit_data ) {
 						throw new Powerform_Addon_Mailchimp_Exception(/* translators: ... */
-							sprintf( __( 'Required Field %1$s not filled by user', Powerform::DOMAIN ), $mailchimp_required_field->name )
+							sprintf( __( 'Das Pflichtfeld %1$s wurde vom Benutzer nicht ausgefüllt.', Powerform::DOMAIN ), $mailchimp_required_field->name )
 						);
 					}
 				}
@@ -553,7 +553,7 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 			if ( ! isset( $add_member_request->id ) || ! $add_member_request->id ) {
 				throw new Powerform_Addon_Mailchimp_Exception(
 					__(
-						'Failed adding or updating member on Mailchimp list',
+						'Fehler beim Hinzufügen oder Aktualisieren eines Mitglieds auf der Mailchimp-Liste',
 						Powerform::DOMAIN
 					)
 				);
@@ -566,7 +566,7 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 					'name'  => 'status',
 					'value' => array(
 						'is_sent'       => true,
-						'description'   => __( 'Successfully added or updated member on Mailchimp list', Powerform::DOMAIN ),
+						'description'   => __( 'Mitglied erfolgreich zur Mailchimp-Liste hinzugefügt oder aktualisiert', Powerform::DOMAIN ),
 						'data_sent'     => $mailchimp_api->get_last_data_sent(),
 						'data_received' => $mailchimp_api->get_last_data_received(),
 						'url_request'   => $mailchimp_api->get_last_url_request(),
@@ -715,9 +715,9 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 		$status      = $addon_meta_data['value'];
 		$sub_entries = array();
 		if ( isset( $status['is_sent'] ) ) {
-			$is_sent       = true === $status['is_sent'] ? __( 'Yes', Powerform::DOMAIN ) : __( 'No', Powerform::DOMAIN );
+			$is_sent       = true === $status['is_sent'] ? __( 'Ja', Powerform::DOMAIN ) : __( 'Nein', Powerform::DOMAIN );
 			$sub_entries[] = array(
-				'label' => __( 'Sent To Mailchimp', Powerform::DOMAIN ),
+				'label' => __( 'An Mailchimp senden', Powerform::DOMAIN ),
 				'value' => $is_sent,
 			);
 		}
@@ -733,7 +733,7 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 			$data_received = $status['data_received'];
 			if ( isset( $data_received->status ) && ! empty( $data_received->status ) && is_string( $data_received->status ) ) {
 				$sub_entries[] = array(
-					'label' => __( 'Member Status', Powerform::DOMAIN ),
+					'label' => __( 'Mitgliederstatus', Powerform::DOMAIN ),
 					'value' => strtoupper( $data_received->status ),
 				);
 			}
@@ -750,14 +750,14 @@ class Powerform_Addon_Mailchimp_Form_Hooks extends Powerform_Addon_Form_Hooks_Ab
 
 			if ( isset( $status['data_sent'] ) ) {
 				$sub_entries[] = array(
-					'label' => __( 'Data sent to Mailchimp', Powerform::DOMAIN ),
+					'label' => __( 'An Mailchimp gesendete Daten', Powerform::DOMAIN ),
 					'value' => '<pre class="sui-code-snippet">' . wp_json_encode( $status['data_sent'], JSON_PRETTY_PRINT ) . '</pre>',
 				);
 			}
 
 			if ( isset( $status['data_received'] ) ) {
 				$sub_entries[] = array(
-					'label' => __( 'Data received from Mailchimp', Powerform::DOMAIN ),
+					'label' => __( 'Von Mailchimp empfangene Daten', Powerform::DOMAIN ),
 					'value' => '<pre class="sui-code-snippet">' . wp_json_encode( $status['data_received'], JSON_PRETTY_PRINT ) . '</pre>',
 				);
 			}

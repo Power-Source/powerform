@@ -30,7 +30,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 		parent::__construct( $addon, $form_id );
 
 		$this->_update_form_settings_error_message = __(
-			'The update to your settings for this form failed, check the form input and try again.',
+			'Die Aktualisierung der Einstellungen für dieses Formular ist fehlgeschlagen; überprüfe die Formulareingaben und versuche es erneut.',
 			Powerform::DOMAIN
 		);
 	}
@@ -100,27 +100,27 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 		// add disconnect button if already is_form_connected
 		if ( $this->addon->is_form_connected( $this->form_id ) ) {
 			$buttons['disconnect']['markup'] = Powerform_Addon_Mailchimp::get_button_markup(
-				esc_html__( 'DISCONNECT', Powerform::DOMAIN ),
+				esc_html__( 'TRENNEN', Powerform::DOMAIN ),
 				'sui-button-ghost sui-tooltip sui-tooltip-top-center powerform-addon-form-disconnect',
-				esc_html__( 'Disconnect Mailchimp from this Form.', Powerform::DOMAIN )
+				esc_html__( 'Trenne Mailchimp von diesem Formular.', Powerform::DOMAIN )
 			);
 		}
 
 		$buttons['next']['markup'] = '<div class="sui-actions-right">' .
-									Powerform_Addon_Mailchimp::get_button_markup( esc_html__( 'Next', Powerform::DOMAIN ), 'powerform-addon-next' ) .
+									Powerform_Addon_Mailchimp::get_button_markup( esc_html__( 'Weiter', Powerform::DOMAIN ), 'powerform-addon-next' ) .
 									'</div>';
 
 		return array(
-			'html'       => '<div class="sui-box-content integration-header"><h3 class="sui-box-title" id="dialogTitle2">' . __( 'Enter list limit', Powerform::DOMAIN ) . '</h3></div>
+			'html'       => '<div class="sui-box-content integration-header"><h3 class="sui-box-title" id="dialogTitle2">' . __( 'Gib das Listenlimit ein', Powerform::DOMAIN ) . '</h3></div>
 							<form>
 								<div class="sui-form-field">
-									<label class="sui-label">' . __( 'List limit', Powerform::DOMAIN ) . '</label>
+									<label class="sui-label">' . __( 'Listenlimit', Powerform::DOMAIN ) . '</label>
 									<div class="sui-form-field">
 										<input name="mail_list_limit"
-											placeholder="' . sprintf( __( 'Example: 10', Powerform::DOMAIN ), 'Mailchimp' ) . '"
+											placeholder="' . sprintf( __( 'Beispiel: 10', Powerform::DOMAIN ), 'Mailchimp' ) . '"
 											value="' . esc_attr( $current_data['mail_list_limit'] ) . '"
 											class="sui-form-control" />
-											<span class="sui-description">' . __( 'By default list limit will be 10.', Powerform::DOMAIN ) . '</spna>
+											<span class="sui-description">' . __( 'Standardmäßig beträgt das Listenlimit 10.', Powerform::DOMAIN ) . '</span>
 									
 									</div>
 								</div>
@@ -180,13 +180,13 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 
 			// Get mailchimp list to be selected, bail on empty
 			if ( ! isset( $request_mail_lists->lists ) || empty( $request_mail_lists->lists ) || ! is_array( $request_mail_lists->lists ) ) {
-				throw new Powerform_Addon_Mailchimp_Exception( 'Your Mailchimp Lists is empty, please create one.' );
+				throw new Powerform_Addon_Mailchimp_Exception( __( 'Deine Mailchimp-Listen sind leer, bitte erstelle eine.', Powerform::DOMAIN ) );
 			}
 			$mail_lists = $request_mail_lists->lists;
 
 			// build html select for mail list
 			$html_select_mail_list  = '<select name="mail_list_id" class="sui-select sui-form-control">';
-			$html_select_mail_list .= '<option value="">' . __( 'None', Powerform::DOMAIN ) . '</option>';
+			$html_select_mail_list .= '<option value="">' . __( 'Keine', Powerform::DOMAIN ) . '</option>';
 
 			foreach ( $mail_lists as $mail_list ) {
 				$html_select_mail_list
@@ -204,7 +204,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 				$mail_list_name = $this->get_choosen_mail_list_name( $mail_lists, $submitted_data );
 				powerform_addon_maybe_log( __METHOD__, '$mail_list_name', $mail_list_name );
 				if ( empty( $mail_list_name ) ) {
-					throw new Powerform_Addon_Mailchimp_Form_Settings_Exception( __( 'Please select valid Email List', Powerform::DOMAIN ), 'mail_list_id' );
+					throw new Powerform_Addon_Mailchimp_Form_Settings_Exception( __( 'Bitte wähle eine gültige E-Mail-Liste', Powerform::DOMAIN ), 'mail_list_id' );
 				}
 				$this->addon_form_settings['mail_list_id']   = $submitted_data['mail_list_id'];
 				$this->addon_form_settings['mail_list_name'] = $mail_list_name;
@@ -232,7 +232,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 
 			$html_field_mail_list
 				= '<div class="sui-form-field">
-						<label class="sui-label">' . __( 'Email List', Powerform::DOMAIN ) . '</label>
+						<label class="sui-label">' . __( 'Mail-Liste', Powerform::DOMAIN ) . '</label>
 						' . $html_select_mail_list . '
 					</div>';
 
@@ -242,7 +242,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 			if ( isset( $input_error_messages['mail_list_id'] ) ) {
 				$html_field_mail_list
 					= '<div class="sui-form-field sui-form-field-error">
-							<label class="sui-label">' . __( 'Email List', Powerform::DOMAIN ) . '</label>
+							<label class="sui-label">' . __( 'Mail-Liste', Powerform::DOMAIN ) . '</label>
 							' . $html_select_mail_list . '
 							<span class="sui-error-message">' . esc_html( $input_error_messages['mail_list_id'] ) . '</span>
 						</div>';
@@ -256,32 +256,32 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 		// add disconnect button if already is_form_connected
 		if ( $this->addon->is_form_connected( $this->form_id ) ) {
 			$buttons['disconnect']['markup'] = Powerform_Addon_Mailchimp::get_button_markup(
-				esc_html__( 'Deactivate', Powerform::DOMAIN ),
+				esc_html__( 'Deaktivieren', Powerform::DOMAIN ),
 				'sui-button-ghost sui-tooltip sui-tooltip-top-center powerform-addon-form-disconnect',
-				esc_html__( 'Deactivate Mailchimp from this Form.', Powerform::DOMAIN )
+				esc_html__( 'Deaktiviere Mailchimp für dieses Formular.', Powerform::DOMAIN )
 			);
 		}
 
 		$buttons['next']['markup'] = '<div class="sui-actions-right">' .
-									Powerform_Addon_Mailchimp::get_button_markup( esc_html__( 'Next', Powerform::DOMAIN ), 'powerform-addon-next' ) .
+									Powerform_Addon_Mailchimp::get_button_markup( esc_html__( 'Weiter', Powerform::DOMAIN ), 'powerform-addon-next' ) .
 									'</div>';
 
 		$gdpr_fields = '';
 		if ( Powerform_Addon_Mailchimp::is_enable_gdpr() ) {
 			$gdpr_fields = '<div class="sui-form-field">' .
-						'<label class="sui-label">' . __( 'Enable GDPR', Powerform::DOMAIN ) . '</label>
+						'<label class="sui-label">' . __( 'DSGVO aktivieren', Powerform::DOMAIN ) . '</label>
 								<input type="checkbox" name="enable_gdpr" value="1" ' . checked( 1, $current_data['enable_double_opt_in'], false ) . '>
 							</div>
 
 							<div class="sui-form-field">
-								<label class="sui-label">' . __( 'GDPR Text', Powerform::DOMAIN ) . '</label>
+								<label class="sui-label">' . __( 'DSGVO Text', Powerform::DOMAIN ) . '</label>
 								<textarea name="gdpr_text">' . $current_data['gdpr_text'] . '</textarea>
 							</div>';
 		}
 
 		return array(
-			'html'       => '<div class="sui-box-content integration-header"><h3 class="sui-box-title" id="dialogTitle2">' . __( 'Choose your list', Powerform::DOMAIN ) . '</h3>
-							<span class="sui-description" style="margin-top: 20px;">' . __( 'Choose the list you want to send form data to.', Powerform::DOMAIN ) . '</span>
+			'html'       => '<div class="sui-box-content integration-header"><h3 class="sui-box-title" id="dialogTitle2">' . __( 'Wähle deine Mail-Liste', Powerform::DOMAIN ) . '</h3>
+							<span class="sui-description" style="margin-top: 20px;">' . __( 'Wähle die Liste, an die die Formulardaten gesendet werden sollen.', Powerform::DOMAIN ) . '</span>
 							' . $error_message . '</div>
 							<form enctype="multipart/form-data">
 								' . $html_field_mail_list . '
@@ -293,7 +293,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 										value="1" ' . checked( 1, $current_data['enable_double_opt_in'], false ) . '>
 										<span class="sui-toggle-slider"></span>
 									</label>
-									<span class="sui-toggle-label" for="powerform_addon_mailchimp_enable_double_opt_in">' . __( 'Use Double Opt in', Powerform::DOMAIN ) . '</span>
+									<span class="sui-toggle-label" for="powerform_addon_mailchimp_enable_double_opt_in">' . __( 'Verwende Double-Opt-in-Verfahren.', Powerform::DOMAIN ) . '</span>
 								</div>
 								' . $gdpr_fields . '
 							</form>',
@@ -427,14 +427,14 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 		$buttons = array();
 		if ( $this->addon->is_form_connected( $this->form_id ) ) {
 			$buttons['disconnect']['markup'] = Powerform_Addon_Mailchimp::get_button_markup(
-				esc_html__( 'Deactivate', Powerform::DOMAIN ),
+				esc_html__( 'Deaktivieren', Powerform::DOMAIN ),
 				'sui-button-ghost sui-tooltip sui-tooltip-top-center powerform-addon-form-disconnect',
-				esc_html__( 'Deactivate Mailchimp from this Form.', Powerform::DOMAIN )
+				esc_html__( 'Mailchimp von diesem Formular deaktivieren.', Powerform::DOMAIN )
 			);
 		}
 
 		$buttons['next']['markup'] = '<div class="sui-actions-right">' .
-									Powerform_Addon_Mailchimp::get_button_markup( esc_html__( 'Save', Powerform::DOMAIN ), 'sui-button-primary powerform-addon-finish' ) .
+									Powerform_Addon_Mailchimp::get_button_markup( esc_html__( 'Speichern', Powerform::DOMAIN ), 'sui-button-primary powerform-addon-finish' ) .
 									'</div>';
 
 		$notification = array();
@@ -442,13 +442,13 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 		if ( $is_submit && empty( $error_message ) && empty( $input_error_messages ) ) {
 			$notification = array(
 				'type' => 'success',
-				'text' => '<strong>' . $this->addon->get_title() . '</strong> ' . __( 'is activated successfully.' ),
+				'text' => '<strong>' . $this->addon->get_title() . '</strong> ' . __( 'wurde erfolgreich aktiviert.', Powerform::DOMAIN ),
 			);
 		}
 
 		return array(
-			'html'         => '<div class="sui-box-content integration-header"><h3 class="sui-box-title" id="dialogTitle2">' . __( 'Assign Fields', Powerform::DOMAIN ) . '</h3>
-							<span class="sui-description" style="margin-top: 20px;">' . __( 'Lastly, match up your form fields with your campaign fields to make sure we\'re sending data to the right place.', Powerform::DOMAIN ) . '</span>
+			'html'         => '<div class="sui-box-content integration-header"><h3 class="sui-box-title" id="dialogTitle2">' . __( 'Felder zuweisen', Powerform::DOMAIN ) . '</h3>
+							<span class="sui-description" style="margin-top: 20px;">' . __( 'Ordne abschließend deine Formularfelder den Kampagnenfeldern zu, um sicherzustellen, dass die Daten an die richtige Stelle gesendet werden.', Powerform::DOMAIN ) . '</span>
 							' . $error_message . '</div>
 							<form enctype="multipart/form-data">
 								' . $html_input_map_fields . '
@@ -489,7 +489,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 					<div class="sui-form-field {{$error_css_class_EMAIL}}">
 						<select class="sui-select" name="fields_map[EMAIL]">
 							<?php if ( empty( $email_fields ) ) { ?>
-								<option value=""><?php esc_html_e( 'None', Powerform::DOMAIN ); ?></option>
+								<option value=""><?php esc_html_e( 'Keine', Powerform::DOMAIN ); ?></option>
 							<?php } else { ?>
 								<?php foreach ( $email_fields as $email_field ) { ?>
 									<option value="<?php echo esc_attr( $email_field['element_id'] ); ?>"
@@ -516,7 +516,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 							<td>
 								<div class="sui-form-field {{$error_css_class_<?php echo esc_attr( $item->tag ); ?>_<?php echo esc_attr( $addr ); ?>}}">
 									<select class="sui-select" name="fields_map[<?php echo esc_attr( $item->tag ); ?>][<?php echo esc_attr( $addr ); ?>]">
-										<option value=""><?php esc_html_e( 'None', Powerform::DOMAIN ); ?></option>
+										<option value=""><?php esc_html_e( 'Keine', Powerform::DOMAIN ); ?></option>
 										<?php foreach ( $this->form_fields as $form_field ) { ?>
 											<option value="<?php echo esc_attr( $form_field['element_id'] ); ?>"
 												<?php selected( $current_data['fields_map'][ $item->tag ][ $addr ], $form_field['element_id'] ); ?>>
@@ -537,7 +537,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 						<td>
 							<div class="sui-form-field {{$error_css_class_<?php echo esc_attr( $item->tag ); ?>}}">
 								<select class="sui-select" name="fields_map[<?php echo esc_attr( $item->tag ); ?>]">
-									<option value=""><?php esc_html_e( 'None', Powerform::DOMAIN ); ?></option>
+									<option value=""><?php esc_html_e( 'Keine', Powerform::DOMAIN ); ?></option>
 									<?php foreach ( $this->form_fields as $form_field ) { ?>
 										<option value="<?php echo esc_attr( $form_field['element_id'] ); ?>"
 											<?php selected( $current_data['fields_map'][ $item->tag ], $form_field['element_id'] ); ?>>
@@ -610,7 +610,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 		}
 
 		if ( ! isset( $post_data['fields_map'] ) ) {
-			$this->_update_form_settings_error_message = 'Please assign fields.';
+			$this->_update_form_settings_error_message = __( 'Bitte Felder zuweisen.', Powerform::DOMAIN );
 			throw new Powerform_Addon_Mailchimp_Exception( $this->_update_form_settings_error_message );
 		}
 		$post_data = $post_data['fields_map'];
@@ -627,7 +627,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 		$input_exceptions = new Powerform_Addon_Mailchimp_Form_Settings_Exception();
 		// EMAIL : super required**
 		if ( ! isset( $post_data['EMAIL'] ) || empty( $post_data['EMAIL'] ) ) {
-			$this->_update_form_settings_error_message = __( 'Please choose valid Powerform field for email address.', Powerform::DOMAIN );
+			$this->_update_form_settings_error_message = __( 'Bitte wähle ein gültiges Powerform-Feld für die E-Mail-Adresse aus.', Powerform::DOMAIN );
 			$input_exceptions->add_input_exception( $this->_update_form_settings_error_message, 'EMAIL' );
 		}
 
@@ -640,7 +640,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 						if ( ! isset( $post_data[ $mailchimp_required_field->tag ][ $addr ] ) || empty( $post_data[ $mailchimp_required_field->tag ][ $addr ] ) ) {
 							$this->_update_form_settings_error_message =
 								/* translators: ... */
-								sprintf( __( '%s is required by Mailchimp, please choose valid Powerform field.', Powerform::DOMAIN ), $mailchimp_required_field->name );
+								sprintf( __( '%s wird von Mailchimp benötigt, bitte wähle ein gültiges Powerform-Feld.', Powerform::DOMAIN ), $mailchimp_required_field->name );
 							$input_exceptions->add_sub_input_exception( $this->_update_form_settings_error_message, $mailchimp_required_field->tag, $addr );
 						}
 					}
@@ -649,7 +649,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 			if ( ! isset( $post_data[ $mailchimp_required_field->tag ] ) || empty( $post_data[ $mailchimp_required_field->tag ] ) ) {
 				$this->_update_form_settings_error_message =
 					/* translators: ... */
-					sprintf( __( '%s is required by Mailchimp, please choose valid Powerform field.', Powerform::DOMAIN ), $mailchimp_required_field->name );
+					sprintf( __( '%s wird von Mailchimp benötigt, bitte wähle ein gültiges Powerform-Feld.', Powerform::DOMAIN ), $mailchimp_required_field->name );
 				$input_exceptions->add_input_exception( $this->_update_form_settings_error_message, $mailchimp_required_field->tag );
 			}
 		}
@@ -675,7 +675,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 
 						$this->_update_form_settings_error_message =
 							/* translators: ... */
-							sprintf( __( 'Please choose valid Powerform field for %s.', Powerform::DOMAIN ), $mailchimp_field_name );
+							sprintf( __( 'Bitte wähle ein gültiges Powerform-Feld für %s.', Powerform::DOMAIN ), $mailchimp_field_name );
 						$input_exceptions->add_sub_input_exception( $this->_update_form_settings_error_message, $mailchimp_field_tag, $addr );
 					}
 				}
@@ -690,7 +690,7 @@ class Powerform_Addon_Mailchimp_Form_Settings extends Powerform_Addon_Form_Setti
 
 				$this->_update_form_settings_error_message =
 					/* translators: ... */
-					sprintf( __( 'Please choose valid Powerform field for %s.', Powerform::DOMAIN ), $mailchimp_field_name );
+					sprintf( __( 'Bitte wähle ein gültiges Powerform-Feld für %s.', Powerform::DOMAIN ), $mailchimp_field_name );
 				$input_exceptions->add_input_exception( $this->_update_form_settings_error_message, $mailchimp_field_tag );
 			}
 		}

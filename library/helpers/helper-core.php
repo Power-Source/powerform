@@ -237,14 +237,6 @@ JS;
 
 	$shared_ui_deps = array( 'jquery', 'jquery-deprecations-polyfill' );
 
-	// Load WP pointer assets when available, but never block shared-ui on environments
-	// where wp-pointer is not registered (some ClassicPress setups).
-	if ( wp_script_is( 'wp-pointer', 'registered' ) ) {
-		wp_enqueue_style( 'wp-pointer' );
-		wp_enqueue_script( 'wp-pointer' );
-		$shared_ui_deps[] = 'wp-pointer';
-	}
-
 	wp_enqueue_script( 'shared-ui', powerform_plugin_url() . 'assets/js/shared-ui.min.js', $shared_ui_deps, $sui_body_class, true );
 
 }
@@ -279,57 +271,47 @@ function powerform_admin_enqueue_scripts( $version, $data = array(), $l10n = arr
 	wp_localize_script( 'powerform-admin-layout', 'powerformData', $data );
 	wp_localize_script( 'powerform-admin-layout', 'powerforml10n', $l10n );
 
-	// Fallback for admin lists/dashboard when shared-ui dropdown/accordion methods are not available.
+	// Inline script for settings navigation only
 	$admin_ui_fallback = <<<'JS'
 (function(w,$){
 	if(!$){return;}
-	if(w.__powerformAdminUiFallbackBound){return;}
-	w.__powerformAdminUiFallbackBound = true;
-
-	function closeDropdowns(except){
-		var drops = $('#powerform-modules-list .sui-dropdown.open');
-		if(except){
-			drops = drops.not(except);
-		}
-		drops.removeClass('open');
-	}
-
-	$('body').on('click.powerformUiFallback', '#powerform-modules-list .sui-dropdown-anchor', function(e){
-		var dropdown = $(this).closest('.sui-dropdown');
-		if(!dropdown.length){
+	
+	function settingsGoTo(section, pushState){
+		var root = $('.psource-powerform-powerform-settings');
+		if(!root.length || !section){
 			return;
 		}
-		closeDropdowns(dropdown);
-		dropdown.toggleClass('open');
+
+		var link = root.find('.sui-sidenav a[data-nav="' + section + '"]');
+		var tabs = root.find('.sui-sidenav .sui-vertical-tab');
+		var boxes = root.find('.sui-box[data-nav]');
+		var target = root.find('.sui-box[data-nav="' + section + '"]');
+
+		if(!target.length){
+			return;
+		}
+
+		tabs.removeClass('current');
+		boxes.hide();
+		target.show();
+		if(link.length){
+			link.parent().addClass('current');
+		}
+		root.find('.sui-sidenav select.sui-mobile-nav').val(section);
+
+		if(pushState && window.history && typeof window.history.pushState === 'function'){
+			window.history.pushState({ selected_tab: section }, 'Global Settings', 'admin.php?page=powerform-settings&section=' + section);
+		}
+	}
+
+	$('body').on('click', '.psource-powerform-powerform-settings .sui-sidenav .sui-vertical-tab a[data-nav]', function(e){
+		settingsGoTo($(this).data('nav'), true);
 		e.preventDefault();
-		e.stopPropagation();
 		e.stopImmediatePropagation();
 	});
 
-	$(document).on('click.powerformUiFallback', function(e){
-		if($(e.target).closest('#powerform-modules-list .sui-dropdown').length){
-			return;
-		}
-		closeDropdowns();
-	});
-
-	$('body').on('click.powerformUiFallback', '#powerform-modules-list .sui-accordion-item-header, #powerform-modules-list tr.sui-accordion-item', function(e){
-		if($(e.target).closest('.sui-accordion-item-action').length){
-			return;
-		}
-
-		var item = $(this).closest('.sui-accordion-item');
-		if(!item.length){
-			return;
-		}
-
-		item.toggleClass('sui-accordion-item--open');
-
-		if($(this).is('tr.sui-accordion-item')){
-			var contentRows = item.nextUntil('.sui-accordion-item').filter('.sui-accordion-item-content');
-			contentRows.toggleClass('sui-accordion-item--open', item.hasClass('sui-accordion-item--open'));
-		}
-
+	$('body').on('change', '.psource-powerform-powerform-settings .sui-sidenav select.sui-mobile-nav', function(e){
+		settingsGoTo($(this).val(), true);
 		e.preventDefault();
 		e.stopImmediatePropagation();
 	});
