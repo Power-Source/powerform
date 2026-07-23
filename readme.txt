@@ -6,7 +6,7 @@ Tags: classicpress, formulare, kontaktformular, formular plugin, zahlungsformula
 Requires at least: 4.9
 Tested up to: 6.8.1
 ClassicPress: 2.7.0
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 Requires PHP: 7.4.0
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -158,6 +158,9 @@ Perfekt! Powerform funktioniert hervorragend mit dem Classic Editor von ClassicP
 Ja! Mit dem eingebauten Import-Wizard kannst du alle CF7-Formulare mit wenigen Klicks migrieren. 📥
 
 == Changelog ==
+
+= 1.0.5 =
+* Textanpassungen
 
 = 1.0.4 =
 * UI Fatal Error Fix, Pop Menüs reagieren wieder richtig
