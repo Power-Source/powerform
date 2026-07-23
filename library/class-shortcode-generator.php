@@ -109,7 +109,7 @@ class Powerform_Shortcode_Generator {
 		wp_enqueue_script(
 			'powerform-shortcode-generator',
 			powerform_plugin_url() . 'build/admin/scgen.min.js',
-			array( 'jquery' ),
+			array( 'jquery', 'shared-ui' ),
 			POWERFORM_VERSION,
 			true // Script jetzt im Footer laden!
 		);
@@ -124,11 +124,15 @@ class Powerform_Shortcode_Generator {
 			jQuery(document).ready(function ($) {
 				$("#powerform-generate-shortcode").off('click').on('click', function(e){
 					e.preventDefault();
-					if (typeof SUI.dialogs["powerform-popup"] === "undefined") {
+					if (
+						typeof window.SUI === "undefined" ||
+						!window.SUI.dialogs ||
+						typeof window.SUI.dialogs["powerform-popup"] === "undefined"
+					) {
 						console.error("SUI.dialogs['powerform-popup'] ist nicht initialisiert!");
 						return;
 					}
-					SUI.dialogs["powerform-popup"].show();
+					window.SUI.dialogs["powerform-popup"].show();
 				});
 			});
 		</script>
