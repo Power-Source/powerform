@@ -167,6 +167,11 @@ abstract class Powerform_Admin_Page {
 	 * @param $hook
 	 */
 	public function enqueue_scripts( $hook ) {
+		// Prevent loading Powerform admin assets on unrelated wp-admin screens.
+		if ( $hook !== $this->page_id ) {
+			return;
+		}
+
 		// Load jquery ui
 		powerform_admin_jquery_ui();
 
@@ -533,15 +538,16 @@ abstract class Powerform_Admin_Page {
 	public function admin_body_classes( $classes ) {
 
 		$screen = get_current_screen();
-
-		$classes = '';
+		if ( ! $screen ) {
+			return $classes;
+		}
 
 		// Do nothing if not a powerform page
 		if ( strpos( $screen->base, '_page_powerform' ) === false ) {
 			return $classes;
 		}
 
-		$classes .= $this->get_sui_body_class();
+		$classes .= ' ' . $this->get_sui_body_class();
 
 		return $classes;
 

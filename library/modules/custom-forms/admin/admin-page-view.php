@@ -472,6 +472,10 @@ class Powerform_CForm_Page extends Powerform_Admin_Page {
 	 * @param $hook
 	 */
 	public function enqueue_scripts( $hook ) {
+		if ( $hook !== $this->page_id ) {
+			return;
+		}
+
 		parent::enqueue_scripts( $hook );
 
 		// for preview
