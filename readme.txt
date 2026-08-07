@@ -6,7 +6,7 @@ Tags: classicpress, formulare, kontaktformular, formular plugin, zahlungsformula
 Requires at least: 4.9
 Tested up to: 6.8.1
 ClassicPress: 2.7.0
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 Requires PHP: 7.4.0
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -158,6 +158,15 @@ Perfekt! Powerform funktioniert hervorragend mit dem Classic Editor von ClassicP
 Ja! Mit dem eingebauten Import-Wizard kannst du alle CF7-Formulare mit wenigen Klicks migrieren. 📥
 
 == Changelog ==
+
+Refactor build process and add script to sync shared UI
+
+= 1.0.7 =
+* `package.json` aktualisiert: Neues Skript zur Synchronisierung der „Shared UI“ von GitHub hinzugefügt.
+* Build-Skripte angepasst, sodass das Synchronisierungsskript vor dem Build-Vorgang ausgeführt wird.
+* Neues Bash-Skript (`sync-shared-ui-from-github.sh`) hinzugefügt, um das Klonen und Kopieren der „Shared UI“-Assets zu übernehmen.
+* `webpack.config.js` refaktoriert, um die Konfiguration zu vereinfachen und nicht mehr benötigte Einstellungen zu entfernen.
+* `ExtractTextPlugin` und `SystemBellPlugin` entfernt, da sie nicht mehr benötigt werden.
 
 = 1.0.6 =
 * Fix: Verhindere das Laden von Powerform-Admin-Ressourcen auf nicht verwandten wp-admin-Seiten

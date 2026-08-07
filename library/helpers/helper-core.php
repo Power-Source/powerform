@@ -157,7 +157,7 @@ function powerform_admin_enqueue_fonts( $version ) {
 function powerform_admin_enqueue_styles( $version ) {
 	wp_enqueue_style( 'choices-css', powerform_plugin_url() . 'assets/css/choices.min.css', array(), '11.0.2', false ); // Choices.js
 	wp_enqueue_style( 'choices-compat-css', powerform_plugin_url() . 'assets/css/choices-compat.css', array( 'choices-css' ), $version, false ); // Select2 compatibility
-	wp_enqueue_style( 'shared-ui', powerform_plugin_url() . 'assets/css/shared-ui.min.css', array(), $version, false );
+	wp_enqueue_style( 'powerform-shared-ui', powerform_plugin_url() . 'assets/css/shared-ui.min.css', array(), $version, false );
 }
 
 /**
@@ -237,7 +237,7 @@ JS;
 
 	$shared_ui_deps = array( 'jquery', 'jquery-deprecations-polyfill' );
 
-	wp_enqueue_script( 'shared-ui', powerform_plugin_url() . 'assets/js/shared-ui.min.js', $shared_ui_deps, $sui_body_class, true );
+	wp_enqueue_script( 'powerform-shared-ui', powerform_plugin_url() . 'assets/js/shared-ui.min.js', $shared_ui_deps, $sui_body_class, true );
 
 }
 

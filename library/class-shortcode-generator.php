@@ -98,7 +98,7 @@ class Powerform_Shortcode_Generator {
 
 		// Get SUI JS
 		wp_enqueue_script(
-			'shared-ui',
+			'powerform-shared-ui',
 			powerform_plugin_url() . 'assets/js/shared-ui.min.js',
 			array( 'jquery' ),
 			$sui_body_class,
@@ -109,7 +109,7 @@ class Powerform_Shortcode_Generator {
 		wp_enqueue_script(
 			'powerform-shortcode-generator',
 			powerform_plugin_url() . 'build/admin/scgen.min.js',
-			array( 'jquery', 'shared-ui' ),
+			array( 'jquery', 'powerform-shared-ui' ),
 			POWERFORM_VERSION,
 			true // Script jetzt im Footer laden!
 		);
