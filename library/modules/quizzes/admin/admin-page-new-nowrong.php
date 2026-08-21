@@ -31,10 +31,6 @@ class Powerform_Quizz_New_NoWrong extends Powerform_Admin_Page {
 	 * @param $hook
 	 */
 	public function enqueue_scripts( $hook ) {
-		if ( $hook !== $this->page_id ) {
-			return;
-		}
-
 		// Load jquery ui
 		powerform_admin_jquery_ui();
 

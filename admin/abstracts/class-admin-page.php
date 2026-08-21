@@ -167,11 +167,9 @@ abstract class Powerform_Admin_Page {
 	 * @param $hook
 	 */
 	public function enqueue_scripts( $hook ) {
-		// Prevent loading Powerform admin assets on unrelated wp-admin screens.
-		if ( $hook !== $this->page_id ) {
+		if ( false === strpos( $hook, 'powerform' ) ) {
 			return;
 		}
-
 		// Load jquery ui
 		powerform_admin_jquery_ui();
 
@@ -229,78 +227,6 @@ abstract class Powerform_Admin_Page {
 	<?php
 	}
 
-	/**
-	 * Render page footer
-	 *
-	 * @since 1.0
-	 */
-	/*protected function render_footer() {
-		$hide_footer = false;
-		$footer_text = sprintf(
-				__( 'Made with %s by WPMU DEV', 'psource' ),
-			' <i class="sui-icon-heart"></i>'
-		);
-		if ( Powerform::is_psource_member() ) {
-			$hide_footer = apply_filters( 'psource_branding_change_footer', $hide_footer );
-			$footer_text = apply_filters( 'psource_branding_footer_text', $footer_text );
-		}
-
-		if ( $this->template_exists( $this->folder . '/footer' ) ) {
-			$this->template( $this->folder . '/footer' );
-		}
-		?>
-		<div class="sui-footer"><?php echo $footer_text; // phpcs:ignore ?></div>
-
-		<?php if ( POWERFORM_PRO ) { ?>
-
-			<?php if ( ! $hide_footer ) : ?>
-				<ul class="sui-footer-nav">
-					<li><a href="https://n3rds.work/hub/" target="_blank"><?php esc_html_e( 'The Hub', Powerform::DOMAIN ); ?></a></li>
-					<li><a href="https://n3rds.work/projects/category/plugins/" target="_blank"><?php esc_html_e( 'Plugins', Powerform::DOMAIN ); ?></a></li>
-					<li><a href="https://n3rds.work/roadmap/" target="_blank"><?php esc_html_e( 'Roadmap', Powerform::DOMAIN ); ?></a></li>
-					<li><a href="https://n3rds.work/hub/support/" target="_blank"><?php esc_html_e( 'Support', Powerform::DOMAIN ); ?></a></li>
-					<li><a href="https://n3rds.work/docs/" target="_blank"><?php esc_html_e( 'Docs', Powerform::DOMAIN ); ?></a></li>
-					<li><a href="https://n3rds.work/hub/community/" target="_blank"><?php esc_html_e( 'Community', Powerform::DOMAIN ); ?></a></li>
-					<li><a href="https://n3rds.work/academy/" target="_blank"><?php esc_html_e( 'Academy', Powerform::DOMAIN ); ?></a></li>
-					<li><a href="https://n3rds.work/terms-of-service/" target="_blank"><?php esc_html_e( 'Terms of Service', Powerform::DOMAIN ); ?></a></li>
-					<li><a href="https://incsub.com/privacy-policy/" target="_blank"><?php esc_html_e( 'Privacy Policy', Powerform::DOMAIN ); ?></a></li>
-				</ul>
-			<?php endif; ?>
-
-		<?php } else { ?>
-
-			<ul class="sui-footer-nav">
-				<li><a href="https://profiles.wordpress.org/psource#content-plugins" target="_blank"><?php esc_html_e( 'Free Plugins', Powerform::DOMAIN ); ?></a></li>
-				<li><a href="https://n3rds.work/features/" target="_blank"><?php esc_html_e( 'Membership', Powerform::DOMAIN ); ?></a></li>
-				<li><a href="https://n3rds.work/roadmap/" target="_blank"><?php esc_html_e( 'Roadmap', Powerform::DOMAIN ); ?></a></li>
-				<li><a href="https://wordpress.org/support/plugin/powerform" target="_blank"><?php esc_html_e( 'Support', Powerform::DOMAIN ); ?></a></li>
-				<li><a href="https://n3rds.work/docs/" target="_blank"><?php esc_html_e( 'Docs', Powerform::DOMAIN ); ?></a></li>
-				<li><a href="https://n3rds.work/hub-welcome/" target="_blank"><?php esc_html_e( 'The Hub', Powerform::DOMAIN ); ?></a></li>
-				<li><a href="https://n3rds.work/terms-of-service/" target="_blank"><?php esc_html_e( 'Terms of Service', Powerform::DOMAIN ); ?></a></li>
-				<li><a href="https://incsub.com/privacy-policy/" target="_blank"><?php esc_html_e( 'Privacy Policy', Powerform::DOMAIN ); ?></a></li>
-			</ul>
-
-		<?php } ?>
-
-		<?php if ( ! $hide_footer ) : ?>
-			<ul class="sui-footer-social">
-				<li><a href="https://www.facebook.com/psource" target="_blank">
-					<i class="sui-icon-social-facebook" aria-hidden="true"></i>
-					<span class="sui-screen-reader-text"><?php esc_html_e( 'Facebook', Powerform::DOMAIN ); ?></span>
-				</a></li>
-				<li><a href="https://twitter.com/psource" target="_blank">
-					<i class="sui-icon-social-twitter" aria-hidden="true"></i>
-					<span class="sui-screen-reader-text"><?php esc_html_e( 'Twitter', Powerform::DOMAIN ); ?></span>
-				</a></li>
-				<li><a href="https://www.instagram.com/wpmu_dev/" target="_blank">
-					<i class="sui-icon-instagram" aria-hidden="true"></i>
-					<span class="sui-screen-reader-text"><?php esc_html_e( 'Instagram', Powerform::DOMAIN ); ?></span>
-				</a></li>
-			</ul>
-		<?php endif; ?>
-
-		<?php
-	}*/
 
 	/**
 	 * Render page container
@@ -538,16 +464,15 @@ abstract class Powerform_Admin_Page {
 	public function admin_body_classes( $classes ) {
 
 		$screen = get_current_screen();
-		if ( ! $screen ) {
-			return $classes;
-		}
+
+		$classes = '';
 
 		// Do nothing if not a powerform page
 		if ( strpos( $screen->base, '_page_powerform' ) === false ) {
 			return $classes;
 		}
 
-		$classes .= ' ' . $this->get_sui_body_class();
+		$classes .= $this->get_sui_body_class();
 
 		return $classes;
 
