@@ -24,9 +24,4 @@
 
 	</div>
 
-	<?php
-	$notice_dismissed = get_option( 'powerform_dismiss_feature_114', false );
-	$version_upgraded = get_option( 'powerform_version_upgraded', false );
-	?>
-
 </section>
