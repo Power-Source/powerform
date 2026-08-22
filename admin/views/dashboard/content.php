@@ -27,11 +27,6 @@
 	<?php
 	$notice_dismissed = get_option( 'powerform_dismiss_feature_114', false );
 	$version_upgraded = get_option( 'powerform_version_upgraded', false );
-
-	if ( ! $notice_dismissed && $version_upgraded && powerform_is_show_documentation_link() ) { ?>
-
-		<?php $this->template( 'dashboard/new-feature-notice' ); ?>
-
-	<?php } ?>
+	?>
 
 </section>

@@ -458,53 +458,6 @@ if ( ! class_exists( 'Powerform' ) ) {
 				include_once powerform_plugin_dir() . 'library/external/autoload_psr4.php';
 			}
 
-			/*if ( ! POWERFORM_PRO ) {
-
-				if ( file_exists( powerform_plugin_dir() . 'library/lib/recommended-plugins/notice.php' ) ) {
-
-					require_once powerform_plugin_dir() . 'library/lib/recommended-plugins/notice.php';
-
-					do_action(
-						'psource-recommended-plugins-register-notice',
-						plugin_basename( __FILE__ ), // Plugin basename
-						'Powerform', // Plugin Name
-						array(
-							'toplevel_page_powerform',
-							'toplevel_page_powerform-network',
-							'powerform_page_powerform-cform',
-							'powerform_page_powerform-cform-network',
-							'powerform_page_powerform-poll',
-							'powerform_page_powerform-poll-network',
-							'powerform_page_powerform-quiz',
-							'powerform_page_powerform-quiz-network',
-							'powerform_page_powerform-settings',
-							'powerform_page_powerform-settings-network',
-							'powerform_page_powerform-cform-wizard',
-							'powerform_page_powerform-cform-wizard-network',
-							'powerform_page_powerform-cform-view',
-							'powerform_page_powerform-cform-view-network',
-							'powerform_page_powerform-poll-wizard',
-							'powerform_page_powerform-poll-wizard-network',
-							'powerform_page_powerform-poll-view',
-							'powerform_page_powerform-poll-view-network',
-							'powerform_page_powerform-nowrong-wizard',
-							'powerform_page_powerform-nowrong-wizard-network',
-							'powerform_page_powerform-knowledge-wizard',
-							'powerform_page_powerform-knowledge-wizard-network',
-							'powerform_page_powerform-quiz-view',
-							'powerform_page_powerform-quiz-view-network',
-							'powerform_page_powerform-entries',
-							'powerform_page_powerform-entries-network',
-							'powerform_page_powerform-integrations',
-							'powerform_page_powerform-integrations-network'
-						),
-						array( 'after', '.sui-wrap .sui-header' ) // selector
-					);
-
-				}
-
-			}*/
-
 		}
 
 		/**
