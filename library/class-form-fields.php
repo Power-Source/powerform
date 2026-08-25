@@ -115,27 +115,40 @@ class Powerform_Fields {
 	/**
 	 * Schedule delete temp file
 	 *
-	 * @since 1.13
+	 * @since 1.0.0
 	 */
 	public function schedule_delete_temp_files() {
-		$temp_path = powerform_upload_root() . '/';
+		$temp_path = trailingslashit( powerform_upload_root() );
 
-		if ( $handle = @opendir( $temp_path ) ) {
-			// Check if the dir exist before opening it
-			if ( is_dir( $temp_path ) ) {
-				if ( $handle = opendir( $temp_path ) ) {
-					while ( false !== ( $file = readdir( $handle ) ) ) {
-						if ( ! empty( $file ) && ! in_array( $file, array( '.', '..' ), true ) ) {
-							$temp_file = $temp_path . $file;
-							$file_time = filemtime( $temp_file );
-							if ( file_exists( $temp_file ) && ( time() - $file_time ) > 60 * 60 * 24 ) {
-								unlink( $temp_file );
-							}
-						}
-					}
-					closedir( $handle );
-				}
+		// Nothing to clean up if the temporary directory does not exist.
+		if ( ! is_dir( $temp_path ) ) {
+			return;
+		}
+
+		$handle = opendir( $temp_path );
+
+		if ( false === $handle ) {
+			return;
+		}
+
+		while ( false !== ( $file = readdir( $handle ) ) ) {
+			if ( in_array( $file, array( '.', '..' ), true ) ) {
+				continue;
+			}
+
+			$temp_file = $temp_path . $file;
+
+			if ( ! is_file( $temp_file ) ) {
+				continue;
+			}
+
+			$file_time = filemtime( $temp_file );
+
+			if ( false !== $file_time && ( time() - $file_time ) > DAY_IN_SECONDS ) {
+				wp_delete_file( $temp_file );
 			}
 		}
+
+		closedir( $handle );
 	}
 }

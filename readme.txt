@@ -159,7 +159,8 @@ Ja! Mit dem eingebauten Import-Wizard kannst du alle CF7-Formulare mit wenigen K
 
 == Changelog ==
 
-Refactor build process and add script to sync shared UI
+= 1.0.8 =
+* Fix: Handle missing Powerform temp directory
 
 = 1.0.7 =
 * `package.json` aktualisiert: Neues Skript zur Synchronisierung der „Shared UI“ von GitHub hinzugefügt.
