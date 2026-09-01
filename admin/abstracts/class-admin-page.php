@@ -525,20 +525,7 @@ abstract class Powerform_Admin_Page {
 	 * @return string
 	 */
 	public function get_box_summary_classes() {
-		$classes = ' sui-rebranded';
-		if ( Powerform::is_psource_member() ) {
-			$hide_branding         = false;
-			$hide_branding         = apply_filters( 'psource_branding_hide_branding', $hide_branding );
-			$custom_branding_image = '';
-			$custom_branding_image = apply_filters( 'psource_branding_hero_image', $custom_branding_image );
-			if ( $hide_branding && ! empty( $custom_branding_image ) ) {
-				$classes = ' sui-rebranded';
-			} elseif ( $hide_branding && empty( $custom_branding_image ) ) {
-				$classes = ' sui-unbranded';
-			}
-		}
-
-		return $classes;
+		return ' powerform-summary-logo';
 	}
 
 	/**
@@ -548,12 +535,7 @@ abstract class Powerform_Admin_Page {
 	 * @return string
 	 */
 	public function get_box_summary_image_url() {
-		$image_url = '';
-		if ( Powerform::is_psource_member() ) {
-			$image_url = apply_filters( 'psource_branding_hero_image', $image_url );
-		}
-
-		return $image_url;
+		return powerform_plugin_url() . 'Logo.png';
 	}
 
 	/**
@@ -565,15 +547,7 @@ abstract class Powerform_Admin_Page {
 	public function get_box_summary_image_style() {
 		$image_url = $this->get_box_summary_image_url();
 
-		if ( empty( $image_url ) ) {
-			$image_url = powerform_plugin_url() . 'Logo.png';
-		}
-
-		if ( ! empty( $image_url ) ) {
-			return 'background-image:url(' . esc_url( $image_url ) . ');background-repeat:no-repeat;background-position:center center;background-size:82% auto';
-		}
-
-		return '';
+		return 'background-image:url(' . esc_url( $image_url ) . ');background-repeat:no-repeat;background-position:center center;background-size:82% auto';
 	}
 
 }

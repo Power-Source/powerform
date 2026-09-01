@@ -6136,6 +6136,10 @@ select.sui-select+.select2-container .select2-selection--single .select2-selecti
 }
 
 @media (min-width:783px) {
+    .sui-wrap .sui-summary.powerform-summary-logo {
+        background-image: none!important
+    }
+
     .sui-wrap .sui-summary:not(.sui-unbranded):not(.sui-summary-sm) .sui-summary-image-space {
         display: block
     }

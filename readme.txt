@@ -169,6 +169,7 @@ Ja! Mit dem eingebauten Import-Wizard kannst du alle CF7-Formulare mit wenigen K
 * Shared UI im Plugin eingefroren; externer GitHub-Sync und zukünftige Shared-UI-Imports entfernt
 * Select-Stack vereinheitlicht: Choices-Kompatibilitätsschicht entfernt und automatische Initialisierung auf Powerform-Container begrenzt
 * Gutenberg-Editor lädt keine komplette Powerform-Frontend- oder Select2-Runtime mehr auf fremden Bearbeitungsseiten
+* Summary-Boxen zeigen ausschließlich das Powerform-Logo ohne zusätzliche Branding-Grafik
 
 = 1.0.7 =
 * `package.json` aktualisiert: Neues Skript zur Synchronisierung der „Shared UI“ von GitHub hinzugefügt.
