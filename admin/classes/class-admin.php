@@ -20,6 +20,10 @@ class Powerform_Admin {
 	 */
 	public function __construct() {
 		$this->includes();
+		add_action( 'admin_enqueue_scripts', array( $this, 'dequeue_assets_on_foreign_screens' ), PHP_INT_MAX );
+		add_action( 'admin_print_styles', array( $this, 'dequeue_assets_on_foreign_screens' ), PHP_INT_MAX );
+		add_action( 'admin_print_scripts', array( $this, 'dequeue_assets_on_foreign_screens' ), PHP_INT_MAX );
+		add_action( 'admin_print_footer_scripts', array( $this, 'dequeue_assets_on_foreign_screens' ), 1 );
 
 		// Init admin pages
 		add_action( 'admin_menu', array( $this, 'add_dashboard_page' ) );
@@ -45,6 +49,36 @@ class Powerform_Admin {
 		 * Triggered when Admin is loaded
 		 */
 		do_action( 'powerform_admin_loaded' );
+	}
+
+	/**
+	 * Prevent Powerform assets from leaking into unrelated admin screens.
+	 */
+	public function dequeue_assets_on_foreign_screens() {
+		$screen = get_current_screen();
+		if ( isset( $screen->id ) && false !== strpos( $screen->id, 'powerform' ) ) {
+			return;
+		}
+
+		$plugin_url = powerform_plugin_url();
+		$assets     = array(
+			'script' => wp_scripts(),
+			'style'  => wp_styles(),
+		);
+
+		foreach ( $assets as $type => $registry ) {
+			foreach ( $registry->queue as $handle ) {
+				if ( empty( $registry->registered[ $handle ]->src ) || 0 !== strpos( $registry->registered[ $handle ]->src, $plugin_url ) ) {
+					continue;
+				}
+
+				if ( 'script' === $type ) {
+					wp_dequeue_script( $handle );
+				} else {
+					wp_dequeue_style( $handle );
+				}
+			}
+		}
 	}
 
 	/**

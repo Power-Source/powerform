@@ -23,6 +23,10 @@ class Powerform_Settings_Page extends Powerform_Admin_Page {
 	}
 
 	public function enqueue_scripts( $hook ) {
+		if ( $hook !== $this->page_id ) {
+			return;
+		}
+
 		parent::enqueue_scripts( $hook );
 		wp_localize_script( 'powerform-admin', 'powerform_addons_data', $this->addons_data );
 	}

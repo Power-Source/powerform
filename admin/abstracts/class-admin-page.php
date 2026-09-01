@@ -167,7 +167,7 @@ abstract class Powerform_Admin_Page {
 	 * @param $hook
 	 */
 	public function enqueue_scripts( $hook ) {
-		if ( false === strpos( $hook, 'powerform' ) ) {
+		if ( $hook !== $this->page_id ) {
 			return;
 		}
 		// Load jquery ui
@@ -525,16 +525,16 @@ abstract class Powerform_Admin_Page {
 	 * @return string
 	 */
 	public function get_box_summary_classes() {
-		$classes = '';
+		$classes = ' sui-rebranded';
 		if ( Powerform::is_psource_member() ) {
 			$hide_branding         = false;
 			$hide_branding         = apply_filters( 'psource_branding_hide_branding', $hide_branding );
 			$custom_branding_image = '';
 			$custom_branding_image = apply_filters( 'psource_branding_hero_image', $custom_branding_image );
 			if ( $hide_branding && ! empty( $custom_branding_image ) ) {
-				$classes .= ' sui-rebranded';
+				$classes = ' sui-rebranded';
 			} elseif ( $hide_branding && empty( $custom_branding_image ) ) {
-				$classes .= ' sui-unbranded';
+				$classes = ' sui-unbranded';
 			}
 		}
 

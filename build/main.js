@@ -508,7 +508,7 @@ var formintorjs;
                         var i = this;
                         t.ajax({ url: Powerform.Data.ajaxUrl, type: "POST", data: { action: "powerform_load_google_fonts", _wpnonce: Powerform.Data.gFontNonce } }).done(function(t) {!0 === t.success && (i.google_font_families = t.data), e.apply(t, [i.google_font_families]) })
                     },
-                    sui_delegate_events: function() { "object" == typeof window.SUI && setTimeout(function() { SUI.suiAccordion(t(".sui-accordion")), SUI.suiTabs(t(".sui-tabs")), t("select").not(".sui-select").not(".powerform-select").not(".powerform-time").not(".fui-multi-select").each(function() { SUI.suiSelect(t(this)) }), t("select.sui-select").not(".fui-multi-select").not(".custom-select2").each(function() { t(this).SUIselect2({ dropdownCssClass: "sui-select-dropdown" }) }), SUI.loadCircleScore(t(".sui-circle-score")), SUI.showHidePassword() }, 50) }
+                    sui_delegate_events: function() { "object" == typeof window.SUI && setTimeout(function() { SUI.suiAccordion(t(".sui-accordion")), SUI.suiTabs(t(".sui-tabs")), t(".sui-2-6-0 select").not(".sui-select").not(".powerform-select").not(".powerform-time").not(".fui-multi-select").each(function() { SUI.suiSelect(t(this)) }), t(".sui-2-6-0 select.sui-select").not(".fui-multi-select").not(".custom-select2").each(function() { t(this).SUIselect2({ dropdownCssClass: "sui-select-dropdown" }) }), SUI.loadCircleScore(t(".sui-circle-score")), SUI.showHidePassword() }, 50) }
                 },
                 n = {
                     $popup: {},

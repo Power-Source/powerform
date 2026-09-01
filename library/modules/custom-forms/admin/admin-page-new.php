@@ -31,6 +31,10 @@ class Powerform_CForm_New_Page extends Powerform_Admin_Page {
 	 * @param $hook
 	 */
 	public function enqueue_scripts( $hook ) {
+		if ( $hook !== $this->page_id ) {
+			return;
+		}
+
 		// React will be enqueued by powerform_admin_enqueue_scripts_forms()
 		
 		// Load jquery ui

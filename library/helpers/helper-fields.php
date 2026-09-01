@@ -498,7 +498,7 @@ function powerform_clear_field_id( $string ) {
  * @since 1.0
  * @return mixed
  */
-function powerform_replace_form_data( $content, $data, Powerform_Custom_Form_Model $custom_form = null, Powerform_Form_Entry_Model $entry = null ) {
+function powerform_replace_form_data( $content, $data, ?Powerform_Custom_Form_Model $custom_form = null, ?Powerform_Form_Entry_Model $entry = null ) {
 	$matches     = array();
 	$fields      = powerform_fields_to_array();
 	$field_types = array_keys( $fields );
@@ -1873,7 +1873,7 @@ function powerform_get_quiz_vars() {
  *
  * @return mixed
  */
-function powerform_replace_form_payment_data( $content, Powerform_Custom_Form_Model $custom_form = null, Powerform_Form_Entry_Model $entry = null ) {
+function powerform_replace_form_payment_data( $content, ?Powerform_Custom_Form_Model $custom_form = null, ?Powerform_Form_Entry_Model $entry = null ) {
 	if ( empty( $custom_form ) ) {
 		return $content;
 	}

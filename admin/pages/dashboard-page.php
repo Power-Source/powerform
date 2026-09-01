@@ -87,11 +87,11 @@ class Powerform_Dashboard_Page extends Powerform_Admin_Page {
 	 * @param $hook
 	 */
 	public function enqueue_scripts( $hook ) {
-		parent::enqueue_scripts( $hook );
-
-		if ( false === strpos( $hook, 'powerform' ) ) {
+		if ( $hook !== $this->page_id ) {
 			return;
 		}
+
+		parent::enqueue_scripts( $hook );
 
 		powerform_print_forms_admin_styles( POWERFORM_VERSION );
 		powerform_print_polls_admin_styles( POWERFORM_VERSION );

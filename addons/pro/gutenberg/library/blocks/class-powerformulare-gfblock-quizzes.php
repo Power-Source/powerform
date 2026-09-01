@@ -99,9 +99,6 @@ class Powerform_GFBlock_Quizzes extends Powerform_GFBlock_Abstract {
 				'l10n'      => $this->localize(),
 			)
 		);
-
-		powerform_print_front_styles( POWERFORM_VERSION );
-		powerform_print_front_scripts( POWERFORM_VERSION );
 	}
 
 	/**

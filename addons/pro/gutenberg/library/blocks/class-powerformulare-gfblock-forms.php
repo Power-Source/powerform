@@ -101,65 +101,6 @@ class Powerform_GFBlock_Forms extends Powerform_GFBlock_Abstract {
 				'l10n'      => $this->localize(),
 			)
 		);
-
-		powerform_print_forms_admin_styles( POWERFORM_VERSION );
-		powerform_print_front_scripts( POWERFORM_VERSION );
-
-		wp_enqueue_script(
-			'select2-powerform',
-			powerform_plugin_url() . 'assets/js/library/select2.full.min.js',
-			array( 'jquery' ),
-			POWERFORM_VERSION,
-			false
-		);
-
-		wp_enqueue_script(
-			'powerform-jquery-validate',
-			powerform_plugin_url() . 'assets/js/library/jquery.validate.min.js',
-			array( 'jquery' ),
-			POWERFORM_VERSION,
-			false
-		);
-
-		wp_enqueue_script(
-			'powerform-custom-form-moment',
-			powerform_plugin_url() . 'assets/js/library/moment.min.js',
-			array( 'jquery' ),
-			'2.22.2',
-			true
-		);
-
-		wp_enqueue_script(
-			'powerform-field-datepicker-range',
-			powerform_plugin_url() . 'assets/js/library/daterangepicker.min.js',
-			array( 'jquery', 'powerform-custom-form-moment' ),
-			'3.1.0',
-			true
-		);
-
-		wp_enqueue_style(
-			'powerform-field-datepicker-range-css',
-			powerform_plugin_url() . 'assets/css/daterangepicker.min.css',
-			array(),
-			'3.1.0'
-		);
-
-		wp_enqueue_script(
-			'powerform-front-scripts',
-			powerform_plugin_url() . 'build/front/front.multi.min.js',
-			array( 'jquery', 'select2-powerform', 'powerform-jquery-validate', 'powerform-custom-form-moment', 'powerform-field-datepicker-range' ),
-			POWERFORM_VERSION,
-			false
-		);
-		$style_src     = powerform_plugin_url() . 'assets/css/intlTelInput.min.css';
-		$style_version = '4.0.3';
-
-		$script_src     = powerform_plugin_url() . 'assets/js/library/intlTelInput.min.js';
-		$script_version = POWERFORM_VERSION;
-		wp_enqueue_style( 'intlTelInput-powerform-css', $style_src, array(), $style_version ); // intlTelInput
-		wp_enqueue_script( 'powerform-intlTelInput', $script_src, array( 'jquery' ), $script_version, false ); // intlTelInput
-
-		wp_localize_script( 'powerform-front-scripts', 'PowerformFront', powerform_localize_data() );
 	}
 
 	/**

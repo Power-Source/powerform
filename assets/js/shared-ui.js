@@ -1,1 +1,0 @@
-import '@psource/shared-ui';

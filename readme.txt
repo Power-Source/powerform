@@ -161,6 +161,14 @@ Ja! Mit dem eingebauten Import-Wizard kannst du alle CF7-Formulare mit wenigen K
 
 = 1.0.8 =
 * Fix: Handle missing Powerform temp directory
+* Fix: Powerform-Admin-Ressourcen werden nur noch auf den zugehörigen Plugin-Seiten geladen
+* Fix: Shortcode-Generator ohne globale Shared-UI- und Select2-Abhängigkeiten umgesetzt, damit Select-Metaboxen im gesamten Adminbereich unverändert bleiben
+* Fix: Versehentlich enqueued Powerform-Assets werden vor der Ausgabe auf fremden Adminseiten quellenbasiert entfernt
+* Fix: PHP-8.4-Deprecations bei optionalen Formular- und Eintragsmodellen behoben
+* Select2 von 4.0.5 auf 4.1.0 aktualisiert und als feste lokale Abhängigkeit eingebunden
+* Shared UI im Plugin eingefroren; externer GitHub-Sync und zukünftige Shared-UI-Imports entfernt
+* Select-Stack vereinheitlicht: Choices-Kompatibilitätsschicht entfernt und automatische Initialisierung auf Powerform-Container begrenzt
+* Gutenberg-Editor lädt keine komplette Powerform-Frontend- oder Select2-Runtime mehr auf fremden Bearbeitungsseiten
 
 = 1.0.7 =
 * `package.json` aktualisiert: Neues Skript zur Synchronisierung der „Shared UI“ von GitHub hinzugefügt.

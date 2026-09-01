@@ -155,9 +155,8 @@ function powerform_admin_enqueue_fonts( $version ) {
  * @param $version
  */
 function powerform_admin_enqueue_styles( $version ) {
-	wp_enqueue_style( 'choices-css', powerform_plugin_url() . 'assets/css/choices.min.css', array(), '11.0.2', false ); // Choices.js
-	wp_enqueue_style( 'choices-compat-css', powerform_plugin_url() . 'assets/css/choices-compat.css', array( 'choices-css' ), $version, false ); // Select2 compatibility
-	wp_enqueue_style( 'shared-ui', powerform_plugin_url() . 'assets/css/shared-ui.min.css', array(), $version, false );
+	wp_enqueue_style( 'powerform-select2', powerform_plugin_url() . 'assets/css/select2.min.css', array(), '4.1.0', false );
+	wp_enqueue_style( 'shared-ui', powerform_plugin_url() . 'assets/css/shared-ui.min.css', array( 'powerform-select2' ), $version, false );
 }
 
 /**
@@ -235,7 +234,20 @@ JS;
 		'after'
 	);
 
-	$shared_ui_deps = array( 'jquery', 'jquery-deprecations-polyfill' );
+	wp_enqueue_script(
+		'powerform-select2',
+		powerform_plugin_url() . 'assets/js/library/select2.full.js',
+		array( 'jquery' ),
+		'4.1.0',
+		true
+	);
+	wp_add_inline_script(
+		'powerform-select2',
+		'(function($){if($ && $.fn.select2){$.fn.SUIselect2=$.fn.select2;$.fn.SUIselect2.defaults=$.fn.select2.defaults;}})(window.jQuery);',
+		'after'
+	);
+
+	$shared_ui_deps = array( 'jquery', 'jquery-deprecations-polyfill', 'powerform-select2' );
 
 	wp_enqueue_script( 'shared-ui', powerform_plugin_url() . 'assets/js/shared-ui.min.js', $shared_ui_deps, $sui_body_class, true );
 
@@ -253,9 +265,6 @@ JS;
 function powerform_admin_enqueue_scripts( $version, $data = array(), $l10n = array() ) {
 	$language = get_option( 'powerform_captcha_language', 'en' );
 
-	// Choices.js (replaces Select2)
-	wp_enqueue_script( 'choices-js', powerform_plugin_url() . 'assets/js/library/choices.min.js', array(), '11.0.2', true );
-	wp_enqueue_script( 'choices-shim', powerform_plugin_url() . 'assets/js/library/select2-to-choices-shim.js', array( 'jquery', 'choices-js' ), $version, true );
 	wp_enqueue_script( 'ace-editor', powerform_plugin_url() . 'assets/js/library/ace/ace.js', array( 'jquery' ), $version, false );
 	wp_enqueue_script( 'google-charts', powerform_plugin_url() . 'assets/js/library/google-charts-loader.js', array( 'jquery' ), $version, false );
 
@@ -345,9 +354,6 @@ JS;
  * @param string $version
  */
 function powerform_admin_enqueue_builder_common_libs( $version ) {
-	// Choices.js (replaces Select2)
-	wp_enqueue_script( 'choices-js', powerform_plugin_url() . 'assets/js/library/choices.min.js', array(), '11.0.2', true );
-	wp_enqueue_script( 'choices-shim', powerform_plugin_url() . 'assets/js/library/select2-to-choices-shim.js', array( 'jquery', 'choices-js' ), $version, true );
 	wp_enqueue_script( 'ace-editor', powerform_plugin_url() . 'assets/js/library/ace/ace.js', array( 'jquery' ), $version, true );
 	wp_enqueue_script( 'google-charts', powerform_plugin_url() . 'assets/js/library/google-charts-loader.js', array( 'jquery' ), $version, true );
 

@@ -512,6 +512,10 @@ class Powerform_Quizz_Page extends Powerform_Admin_Page {
 	 * @param $hook
 	 */
 	public function enqueue_scripts( $hook ) {
+		if ( $hook !== $this->page_id ) {
+			return;
+		}
+
 		parent::enqueue_scripts( $hook );
 
 		powerform_print_front_styles( POWERFORM_VERSION );
