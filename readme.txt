@@ -4,10 +4,10 @@ Author URI: https://psource.eimen.net
 Contributors: PSOURCE
 Tags: classicpress, formulare, kontaktformular, formular plugin, zahlungsformular, custom form, form builder, paypal formular, formular erstellen, quiz, quiz builder, bestellformular, stripe zahlungen, paypal zahlungen, umfrage, poll
 Requires at least: 4.9
-Tested up to: 6.8.1
-ClassicPress: 2.7.0
-Stable tag: 1.0.7
-Requires PHP: 7.4.0
+Tested up to: 7.1.0
+ClassicPress: 2.7.1
+Stable tag: 1.0.8
+Requires PHP: 8.0.0
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
 🚀 Das beste ClassicPress Formular-Plugin! Erstelle Kontaktformulare, Zahlungsformulare & Bestellformulare mit 1000+ Integrationen. (WordPress kompatibel)

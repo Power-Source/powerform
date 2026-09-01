@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: PS Powerform
- * Version: 1.0.7
+ * Version: 1.0.8
  * Plugin URI:  https://psource.eimen.net/wiki/ps-powerform-dokumentation/
  * Description: Erfasse Benutzerinformationen (so detailliert wie Du möchtest), beteilige Benutzer an interaktiven Umfragen, die Echtzeitergebnisse und Grafiken, Quizfragen im Facebook-Stil und Wissenstests ohne falsche Antwort anzeigen.
  * Author: PSOURCE
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'POWERFORM_VERSION' ) ) {
-	define( 'POWERFORM_VERSION', '1.0.7' );
+	define( 'POWERFORM_VERSION', '1.0.8' );
 }
 
 if ( ! defined( 'POWERFORM_SUI_VERSION' ) ) {
@@ -64,10 +64,6 @@ if ( ! defined( 'POWERFORM_PLUGIN_BASENAME' ) ) {
 	define( 'POWERFORM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 }
-
-/*if ( ! defined( 'POWERFORM_PRO_URL' ) ) {
-	define( 'POWERFORM_PRO_URL', 'https://n3rds.work/project/powerform-pro/' );
-}*/
 
 // Include API
 require_once plugin_dir_path( __FILE__ ) . 'library/class-api.php';
@@ -410,42 +406,6 @@ if ( ! class_exists( 'Powerform' ) ) {
 		 * @since 1.0
 		 */
 		private function include_vendors() {
-			/*if ( file_exists( powerform_plugin_dir() . 'library/lib/dash-notice/psource-dash-notification.php' ) ) {
-				//load dashboard notice
-				global $psource_notices;
-				$psource_notices[] = array(
-					'id'      => 1000000,
-					'name'    => POWERFORM_PRO ? 'Powerform' : 'Powerform',
-					'screens' => array(
-						'toplevel_page_powerform',
-						'toplevel_page_powerform-network',
-						'powerform_page_powerform-cform',
-						'powerform_page_powerform-cform-network',
-						'powerform_page_powerform-poll',
-						'powerform_page_powerform-poll-network',
-						'powerform_page_powerform-quiz',
-						'powerform_page_powerform-quiz-network',
-						'powerform_page_powerform-settings',
-						'powerform_page_powerform-settings-network',
-						'powerform_page_powerform-cform-wizard',
-						'powerform_page_powerform-cform-wizard-network',
-						'powerform_page_powerform-cform-view',
-						'powerform_page_powerform-cform-view-network',
-						'powerform_page_powerform-poll-wizard',
-						'powerform_page_powerform-poll-wizard-network',
-						'powerform_page_powerform-poll-view',
-						'powerform_page_powerform-poll-view-network',
-						'powerform_page_powerform-nowrong-wizard',
-						'powerform_page_powerform-nowrong-wizard-network',
-						'powerform_page_powerform-knowledge-wizard',
-						'powerform_page_powerform-knowledge-wizard-network',
-						'powerform_page_powerform-quiz-view',
-						'powerform_page_powerform-quiz-view-network',
-					),
-				);
-				/** @noinspection PhpIncludeInspection */
-				//include_once powerform_plugin_dir() . 'library/lib/dash-notice/psource-dash-notification.php';
-			//}
 
 			// un-change-able 5.6.0 requirement, based on lowest version needed on vendors list
 			if ( version_compare( PHP_VERSION, '5.6.0', 'ge' ) ) {
